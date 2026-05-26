@@ -1,0 +1,1771 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Property Analyzer | Brian Polodna · ReeceNichols</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --violet:#7c3aed; --violet-l:#8b5cf6; --violet-dim:rgba(124,58,237,0.1); --violet-border:rgba(124,58,237,0.25);
+  --blue:#2563eb; --blue-l:#3b82f6; --blue-dim:rgba(37,99,235,0.1);
+  --emerald:#059669; --emerald-l:#10b981; --emerald-dim:rgba(5,150,105,0.1); --emerald-border:rgba(5,150,105,0.28);
+  --rose:#e11d48; --rose-dim:rgba(225,29,72,0.1);
+  --amber:#d97706; --amber-dim:rgba(217,119,6,0.1); --amber-border:rgba(217,119,6,0.28);
+  --grad:linear-gradient(135deg,#7c3aed 0%,#2563eb 100%);
+  --grad-soft:linear-gradient(135deg,rgba(124,58,237,0.08) 0%,rgba(37,99,235,0.06) 100%);
+  --grad-header:linear-gradient(135deg,#1c1c1c 0%,#2a2a2a 50%,#1c1c1c 100%);
+  --text:#1e1b4b; --text-dim:rgba(30,27,75,0.55); --text-faint:rgba(30,27,75,0.38);
+  --bg:#ffffff; --bg2:#f8fafc; --card:#ffffff;
+  --border:rgba(30,27,75,0.1); --border-soft:rgba(30,27,75,0.07);
+  --radius:14px; --radius-sm:9px; --radius-xs:6px;
+  --shadow:0 1px 4px rgba(30,27,75,0.08),0 4px 16px rgba(30,27,75,0.04);
+  --shadow-md:0 4px 20px rgba(30,27,75,0.12),0 1px 6px rgba(30,27,75,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;}
+header{background:var(--grad-header);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 32px rgba(91,33,182,0.35);overflow:hidden;}header::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(245,197,24,0.04) 0%,rgba(245,197,24,0.08) 30%,rgba(255,255,255,0.02) 70%,rgba(0,0,0,0.1) 100%);pointer-events:none;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,#a78bfa,#60a5fa);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(124,58,237,0.4);}
+.logo-text{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+.logo-text span{background:linear-gradient(135deg,#a78bfa,#93c5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.hdr-tag{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(167,139,250,0.9);background:rgba(124,58,237,0.2);border:1px solid rgba(167,139,250,0.3);padding:4px 11px;border-radius:20px;}
+.btn-pdf{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:20px;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);}
+.btn-pdf:hover{background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.35);}
+.wrap{max-width:1380px;margin:0 auto;padding:30px 40px 80px;}
+.step-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--violet);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.step-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--violet-border),transparent);}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--grad);color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(124,58,237,0.35);}
+.card{background:var(--card);border:1px solid var(--border-soft);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.card-gold{border-color:var(--violet-border);background:linear-gradient(135deg,#fff 60%,rgba(124,58,237,0.02));}
+.ig{display:flex;flex-direction:column;gap:5px;}
+.il{font-size:10px;font-weight:600;color:var(--violet);letter-spacing:0.8px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.tt{width:14px;height:14px;border-radius:50%;background:var(--violet-dim);border:1px solid var(--violet-border);color:var(--violet);font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;position:relative;flex-shrink:0;}
+.tt:hover .tb{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+.tb{position:absolute;bottom:calc(100%+8px);left:50%;transform:translateX(-50%) translateY(4px);background:#1e1b4b;border-radius:var(--radius-sm);padding:10px 13px;width:214px;font-size:11px;font-weight:400;color:#e0e7ff;text-transform:none;letter-spacing:0;line-height:1.55;z-index:300;opacity:0;pointer-events:none;transition:all 0.18s ease;box-shadow:0 8px 30px rgba(30,27,75,0.35);}
+.tb .tn{color:#a78bfa;font-weight:700;font-size:10px;letter-spacing:0.5px;display:block;margin-bottom:3px;}
+.tb::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1e1b4b;}
+input[type="number"]{background:#f8f7ff;border:1.5px solid rgba(124,58,237,0.15);border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;padding:9px 12px;width:100%;outline:none;-moz-appearance:textfield;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;}
+input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;}
+input[type="number"]:focus{border-color:var(--violet);background:#fff;box-shadow:0 0 0 3px rgba(124,58,237,0.1);}
+.ipfx{position:relative;}
+.ipfx input{padding-left:24px;}
+.ipfx::before{content:attr(data-pre);position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--violet);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;z-index:1;pointer-events:none;}
+.isfx{position:relative;}
+.isfx input{padding-right:28px;}
+.isfx::after{content:attr(data-suf);position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--violet);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.fin-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:12px 16px;background:var(--card);border:1.5px solid var(--border-soft);border-radius:var(--radius);margin-bottom:4px;transition:all 0.15s;}
+.fin-toggle:hover{border-color:var(--violet-border);background:#faf9ff;}
+.fin-toggle-label{font-size:11px;font-weight:600;color:var(--text-dim);letter-spacing:0.3px;display:flex;align-items:center;gap:8px;}
+.fin-toggle-vals{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--violet);background:var(--violet-dim);padding:2px 8px;border-radius:10px;}
+.fin-chevron{font-size:10px;color:var(--text-faint);transition:transform 0.2s;}
+.fin-chevron.open{transform:rotate(180deg);}
+.fin-body{display:none;margin-bottom:16px;}
+.fin-body.open{display:block;}
+.strategy-section{margin:28px 0 20px;}
+.strategy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.strat-card{background:var(--card);border:2px solid var(--border-soft);border-radius:var(--radius);padding:20px 18px;cursor:pointer;transition:all 0.22s;text-align:left;position:relative;overflow:hidden;}
+.strat-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.22s;border-radius:calc(var(--radius) - 2px);}
+.strat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);}
+.strat-card.active-flip{border-color:var(--amber);box-shadow:0 4px 24px rgba(217,119,6,0.18);}
+.strat-card.active-flip::before{background:linear-gradient(135deg,rgba(217,119,6,0.06),rgba(217,119,6,0.02));opacity:1;}
+.strat-card.active-ltr{border-color:var(--emerald);box-shadow:0 4px 24px rgba(5,150,105,0.15);}
+.strat-card.active-ltr::before{background:linear-gradient(135deg,rgba(5,150,105,0.07),rgba(5,150,105,0.02));opacity:1;}
+.strat-card.active-str{border-color:var(--violet);box-shadow:0 4px 24px rgba(124,58,237,0.18);}
+.strat-card.active-str::before{background:var(--grad-soft);opacity:1;}
+.strat-card.active-cmp{border-color:var(--blue);box-shadow:0 4px 24px rgba(37,99,235,0.15);}
+.strat-card.active-cmp::before{background:linear-gradient(135deg,rgba(37,99,235,0.06),rgba(124,58,237,0.04));opacity:1;}
+.strat-icon{font-size:28px;margin-bottom:10px;display:block;}
+.strat-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.strat-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+.strat-tag{position:absolute;top:11px;right:11px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:10px;}
+.strat-card.active-flip .strat-tag{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-border);}
+.strat-card.active-ltr .strat-tag{background:var(--emerald-dim);color:var(--emerald);border:1px solid var(--emerald-border);}
+.strat-card.active-str .strat-tag{background:var(--violet-dim);color:var(--violet);border:1px solid var(--violet-border);}
+.strat-card.active-cmp .strat-tag{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(37,99,235,0.28);}
+.strat-inputs{display:none;}
+.strat-inputs.active{display:block;}
+.inp-section-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;margin-top:16px;}
+.flip-top{border-top:3px solid var(--amber);}
+.ltr-top{border-top:3px solid var(--emerald);}
+.str-top{border-top:3px solid var(--violet);}
+.cmp-top{border-top:3px solid var(--blue);}
+.col-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.badge{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 11px;border-radius:20px;}
+.bf{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-border);}
+.bl{background:var(--emerald-dim);color:var(--emerald);border:1px solid var(--emerald-border);}
+.bs{background:var(--violet-dim);color:var(--violet);border:1px solid var(--violet-border);}
+.results-section{margin-top:24px;}
+.verdict-hero{border-radius:var(--radius);padding:22px 26px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-bottom:18px;}
+.v-green{background:linear-gradient(135deg,rgba(5,150,105,0.1),rgba(5,150,105,0.04));border:1.5px solid rgba(5,150,105,0.3);}
+.v-yellow{background:linear-gradient(135deg,rgba(217,119,6,0.1),rgba(217,119,6,0.04));border:1.5px solid rgba(217,119,6,0.3);}
+.v-red{background:linear-gradient(135deg,rgba(225,29,72,0.09),rgba(225,29,72,0.04));border:1.5px solid rgba(225,29,72,0.28);}
+.v-icon{font-size:32px;line-height:1;}
+.v-main{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;margin-bottom:5px;color:var(--text);}
+.v-sub{font-size:13px;color:var(--text-dim);line-height:1.5;}
+.v-rec{text-align:center;min-width:100px;}
+.v-rec-lbl{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--violet);margin-bottom:4px;}
+.v-rec-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.key-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.km-card{background:var(--card);border:1.5px solid var(--border-soft);border-radius:var(--radius-sm);padding:14px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.km-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);}
+.km-label{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;}
+.km-val{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:var(--text);}
+.km-val.pos{color:var(--emerald);}
+.km-val.neg{color:var(--rose);}
+.km-val.gld{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.km-val.pur{color:var(--violet);}
+.km-sub{font-size:10px;color:var(--text-faint);margin-top:3px;}
+.mrow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-soft);}
+.mrow:last-child{border-bottom:none;}
+.ml{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:5px;}
+.mv{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--text);}
+.mv.pos{color:var(--emerald);}
+.mv.neg{color:var(--rose);}
+.mv.gld{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.mv.pur{color:var(--violet);}
+.r70{display:flex;align-items:center;gap:13px;padding:12px 16px;border-radius:var(--radius);margin-bottom:16px;}
+.r70p{background:var(--emerald-dim);border:1.5px solid var(--emerald-border);}
+.r70f{background:var(--rose-dim);border:1.5px solid rgba(225,29,72,0.28);}
+.r70t{flex:1;}
+.r70h{font-weight:600;font-size:13px;margin-bottom:2px;}
+.r70d{font-size:11px;color:var(--text-dim);line-height:1.4;}
+.r70m{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap;}
+.r70ml{font-size:9px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;}
+.adv-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:13px 18px;background:var(--card);border:1.5px solid var(--border-soft);border-radius:var(--radius);margin-top:20px;transition:all 0.15s;}
+.adv-toggle:hover{border-color:var(--violet-border);background:#faf9ff;}
+.adv-toggle-lbl{font-size:11px;font-weight:600;color:var(--text-dim);display:flex;align-items:center;gap:8px;}
+.adv-chevron{font-size:10px;color:var(--text-faint);transition:transform 0.2s;}
+.adv-chevron.open{transform:rotate(180deg);}
+.adv-body{display:none;margin-top:4px;}
+.adv-body.open{display:block;}
+.sl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.sl-card{background:var(--card);border:1.5px solid var(--border-soft);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);}
+.sl-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.sl-lbl{font-size:10px;font-weight:600;color:var(--violet);letter-spacing:0.8px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.sl-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--violet);background:var(--violet-dim);padding:2px 9px;border-radius:5px;border:1px solid var(--violet-border);min-width:50px;text-align:center;}
+input[type="range"]{-webkit-appearance:none;width:100%;height:4px;background:rgba(124,58,237,0.15);border-radius:2px;outline:none;cursor:pointer;margin-top:2px;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--grad);border:2px solid #fff;box-shadow:0 2px 8px rgba(124,58,237,0.4);cursor:pointer;transition:transform 0.15s;}
+input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+.sl-imp{margin-top:9px;display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.sl-ii{background:rgba(124,58,237,0.05);border-radius:6px;padding:6px 8px;border:1px solid rgba(124,58,237,0.08);}
+.sl-il{font-size:9px;color:var(--text-faint);margin-bottom:2px;}
+.sl-iv{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;}
+.sens-ctrl{display:flex;gap:10px;margin-bottom:12px;align-items:center;flex-wrap:wrap;}
+.sc-lbl{font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+select{background:var(--card);border:1.5px solid rgba(124,58,237,0.18);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:6px 10px;outline:none;cursor:pointer;}
+select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1);}
+.st{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12px;}
+.st th{background:#ede9fe;color:var(--violet);font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;text-align:center;border:1px solid rgba(124,58,237,0.1);}
+.st th.rh{text-align:left;color:var(--violet-l);background:rgba(124,58,237,0.08);}
+.st td{padding:7px 11px;text-align:center;border:1px solid rgba(124,58,237,0.07);font-weight:500;}
+.st td.rl{text-align:left;color:var(--violet);font-size:10px;background:rgba(124,58,237,0.04);font-weight:600;}
+.cg{background:rgba(5,150,105,0.18);color:#065f46;}
+.cgl{background:rgba(5,150,105,0.08);color:#059669;}
+.cy{background:rgba(217,119,6,0.13);color:#92400e;}
+.cr{background:rgba(225,29,72,0.1);color:#be123c;}
+.crk{background:rgba(225,29,72,0.2);color:#9f1239;}
+.cb{outline:2px solid var(--violet);outline-offset:-2px;position:relative;}
+.cb::after{content:'●';position:absolute;top:2px;right:3px;font-size:5px;color:var(--violet);}
+.amg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.amc{background:rgba(124,58,237,0.05);border-radius:var(--radius-xs);padding:9px;text-align:center;border:1px solid rgba(124,58,237,0.08);}
+.amy{font-size:9px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+.amv{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--text);}
+.loan-btn,.draw-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:7px 18px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--text-dim);transition:all 0.2s;}
+.loan-btn:hover,.draw-btn:hover{border-color:var(--violet-border);color:var(--violet);}
+.loan-btn.active,.draw-btn.active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 2px 10px rgba(124,58,237,0.3);}
+.pay-btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:8px 20px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--text-dim);transition:all 0.2s;}
+.pay-btn:hover{border-color:var(--violet-border);color:var(--violet);}
+.pay-btn.active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 2px 12px rgba(124,58,237,0.35);}
+.be-box{background:var(--card);border:1.5px solid var(--violet-border);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow);}
+.be-yr{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.thresh-toggle{font-size:11px;color:var(--text-faint);cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-bottom:16px;padding:5px 0;border-bottom:1px dashed rgba(124,58,237,0.25);transition:color 0.15s;}
+.thresh-toggle:hover{color:var(--violet);}
+.thresh-body{display:none;margin-bottom:16px;}
+.thresh-body.open{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.tgt-g{display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--violet-border);border-radius:var(--radius-sm);padding:8px 12px;box-shadow:var(--shadow);}
+.tgt-g label{font-size:10px;font-weight:600;color:var(--violet);letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.tgt-g input{width:72px;padding:5px 8px;font-size:13px;}
+.tax-card{background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(37,99,235,0.04));border:1.5px solid var(--violet-border);border-left:4px solid var(--violet);border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:14px;}
+.tax-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.tax-body{flex:1;}
+.tax-title{font-size:10px;font-weight:700;color:var(--violet);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.tax-line{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:4px;}
+.tax-line strong{color:var(--text);font-weight:700;}
+.tax-disclaimer{font-size:11px;color:var(--text-faint);margin-top:6px;font-style:italic;}
+.cmp-summary{background:var(--card);border:1.5px solid var(--violet-border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow);}
+.winner-card{outline:2.5px solid var(--violet);outline-offset:3px;box-shadow:0 0 0 6px rgba(124,58,237,0.08),var(--shadow-md) !important;}
+.dv{height:1px;background:linear-gradient(90deg,var(--violet-border),transparent);margin:20px 0;}
+.mb16{margin-bottom:16px;}
+.mb20{margin-bottom:20px;}
+.mb8{margin-bottom:8px;}
+
+/* PROPERTY TYPE TOGGLE */
+.prop-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0;}
+.prop-type-card{background:var(--card);border:2px solid var(--border-soft);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.22s;display:flex;align-items:center;gap:14px;}
+.prop-type-card:hover{border-color:var(--violet-border);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.prop-type-card.active{border-color:var(--violet);box-shadow:0 4px 20px rgba(124,58,237,0.15);background:linear-gradient(135deg,#fff,rgba(124,58,237,0.03));}
+.prop-type-icon{font-size:28px;flex-shrink:0;}
+.prop-type-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.prop-type-desc{font-size:11px;color:var(--text-dim);line-height:1.4;}
+.prop-type-tag{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;background:var(--violet-dim);color:var(--violet);border:1px solid var(--violet-border);flex-shrink:0;}
+@media(max-width:900px){.wrap{padding:20px 16px 40px;}.strategy-grid{grid-template-columns:repeat(2,1fr);}.key-metrics{grid-template-columns:repeat(2,1fr);}.three-col,.two-col{grid-template-columns:1fr;}.g4,.g5{grid-template-columns:repeat(2,1fr);}header{padding:0 16px;}}
+@media print{header{position:relative;}.adv-body{display:block !important;}.btn-pdf{display:none;}}
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;border-radius:6px;box-shadow:0 2px 12px rgba(245,197,24,0.5);overflow:hidden;">
+  <rect width="40" height="40" rx="6" fill="#F5C518"/>
+  <!-- White ampersand, oversized and offset top-left to simulate the bleed -->
+  <text x="-6" y="38" font-family="Georgia,'Times New Roman',serif" font-size="52" font-weight="900" fill="white" opacity="1">&amp;</text>
+</svg>
+    <div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;line-height:1.1;">Brian Polodna</div>
+      <div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div>
+    </div>
+    <div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div>
+    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);letter-spacing:0.3px;">Investment Property Analyzer</div>
+  </div>
+  <div class="hdr-r">
+    <a href="tel:8163484511" style="font-size:11px;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.3px;">(816) 348-4511</a>
+    <a href="https://www.instagram.com/bpolodnarealtor/" target="_blank" style="font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,197,24,0.9);background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.3);padding:4px 11px;border-radius:20px;text-decoration:none;">@bpolodnarealtor</a>
+    <button class="btn-pdf" onclick="window.print()">🖨️ Export PDF</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- STEP 0: PROPERTY TYPE -->
+  <div style="margin-bottom:20px;">
+    <div class="step-label"><span class="step-num">1</span> Property Type</div>
+    <div class="prop-type-grid">
+      <div class="prop-type-card active" id="pt-sfh" onclick="setPropType('sfh')">
+        <div class="prop-type-icon">🏠</div>
+        <div>
+          <div class="prop-type-name">Single Family</div>
+          <div class="prop-type-desc">One unit. Flip, rent long-term, or run as a short-term rental.</div>
+        </div>
+        <span class="prop-type-tag" id="pt-sfh-tag">Selected</span>
+      </div>
+      <div class="prop-type-card" id="pt-mfh" onclick="setPropType('mfh')">
+        <div class="prop-type-icon">🏢</div>
+        <div>
+          <div class="prop-type-name">Multi-Family</div>
+          <div class="prop-type-desc">2–20 units. Duplex, triplex, small apartment building. Rental analysis with per-unit configuration.</div>
+        </div>
+        <span class="prop-type-tag" id="pt-mfh-tag" style="display:none;">Selected</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: PROPERTY -->
+  <div style="margin-bottom:20px;">
+    <div class="step-label"><span class="step-num">2</span> The Property</div>
+    <div class="card card-gold">
+      <div class="g4" style="margin-bottom:12px;">
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Purchase Price</span>The contracted price you'll pay to acquire the property. Everything flows from this number.</span></span>Purchase Price</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="purchasePrice" value="185000" step="1000" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">After Repair Value (ARV)</span>What the property will be worth fully renovated. Your ceiling on a flip. Be conservative — an optimistic ARV is how investors lose money.</span></span>ARV</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="arv" value="270000" step="1000" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Rehab Cost</span>Estimated total renovation cost. Always add a contingency — rehabs almost always run over.</span></span>Rehab Cost</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="rehabCost" value="35000" step="1000" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Rehab Contingency</span>Extra % for surprises. 10–15% is standard. Use 20% for older homes or uncertain scopes. This money gets spent.</span></span>Contingency</div>
+          <div class="isfx" data-suf="%"><input type="number" id="rehabContingency" value="15" min="0" max="50" oninput="calc()"></div>
+        </div>
+      </div>
+      <div class="g4">
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Property Tax</span>Look this up — don't estimate. Property taxes vary wildly by market and county and directly affect every strategy's cash flow.</span></span>Annual Property Tax</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="propTax" value="2400" step="100" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Insurance</span>Annual landlord/investment property policy. Typically $800–2,000/yr. Not the same as homeowner's insurance — make sure you have the right policy.</span></span>Annual Insurance</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="propInsurance" value="1200" step="100" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual HOA</span>Homeowners association fees. Enter 0 if none. Non-negotiable — model at full cost. Also verify HOA rules before buying for STR.</span></span>Annual HOA</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="propHOA" value="0" step="100" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Utilities (Flip/STR)</span>Estimated monthly utilities while holding. Used for flip holding cost calculation and STR operating costs. LTR tenants typically pay their own utilities.</span></span>Monthly Utilities</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="propUtilities" value="200" step="25" oninput="calc()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: FINANCING (collapsible) -->
+  <div style="margin-bottom:20px;">
+    <div class="step-label"><span class="step-num">3</span> Financing</div>
+    <!-- Cash / Financing toggle -->
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button class="pay-btn active" id="btn-financing" onclick="setPayMode('financing')">🏦 Financing</button>
+      <button class="pay-btn" id="btn-cash" onclick="setPayMode('cash')">💵 Paying Cash</button>
+    </div>
+    <div id="financing-section">
+      <div class="fin-toggle" onclick="toggleFin()">
+        <div class="fin-toggle-label">
+          <span>💰</span>
+          <span>Financing Details</span>
+          <span class="fin-toggle-vals" id="fin-summary">20% down · 7.5% · 30 yrs</span>
+        </div>
+        <span class="fin-chevron" id="fin-chevron">▼</span>
+      </div>
+      <div class="fin-body" id="fin-body">
+        <div class="card" style="border-radius:0 0 var(--radius) var(--radius);border-top:none;margin-top:0;">
+          <div class="g4">
+            <div class="ig">
+              <div class="il"><span class="tt">?<span class="tb"><span class="tn">Down Payment</span>% of purchase price paid upfront. Investment properties typically require 20–25% for conventional financing.</span></span>Down Payment</div>
+              <div class="isfx" data-suf="%"><input type="number" id="downPayment" value="20" min="0" max="100" step="5" oninput="calc();updateFinSummary()"></div>
+            </div>
+            <div class="ig">
+              <div class="il"><span class="tt">?<span class="tb"><span class="tn">Interest Rate</span>Mortgage or hard money rate. Investment rates run 0.5–1% above primary residence rates.</span></span>Interest Rate</div>
+              <div class="isfx" data-suf="%"><input type="number" id="interestRate" value="7.5" min="0" max="20" step="0.25" oninput="calc();updateFinSummary()"></div>
+            </div>
+            <div class="ig">
+              <div class="il"><span class="tt">?<span class="tb"><span class="tn">Loan Term</span>For rentals: 30 years standard. For hard money flips: typically 12 months.</span></span>Loan Term</div>
+              <div class="isfx" data-suf="yrs"><input type="number" id="loanTerm" value="30" min="1" max="30" step="1" oninput="calc();updateFinSummary()"></div>
+            </div>
+            <div class="ig">
+              <div class="il"><span class="tt">?<span class="tb"><span class="tn">Buying Closing Costs</span>Title, escrow, inspection, lender fees. Typically 2–3% of purchase price.</span></span>Closing Costs</div>
+              <div class="isfx" data-suf="%"><input type="number" id="closingCostsBuy" value="2.5" min="0" max="10" step="0.5" oninput="calc()"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="cash-section" style="display:none;">
+      <div class="card" style="display:flex;align-items:center;gap:14px;padding:14px 18px;">
+        <span style="font-size:22px;">💵</span>
+        <div>
+          <div style="font-weight:600;color:var(--text);font-size:13px;margin-bottom:3px;">Paying cash — no mortgage</div>
+          <div style="font-size:12px;color:var(--text-dim);">Cash required = purchase price + closing costs + rehab. No debt service in any analysis.</div>
+        </div>
+        <div style="margin-left:auto;">
+          <div class="ig" style="min-width:160px;">
+            <div class="il"><span class="tt">?<span class="tb"><span class="tn">Buying Closing Costs</span>Even cash buyers pay title, escrow, and inspection fees. Typically 1–2% without lender fees.</span></span>Closing Costs</div>
+            <div class="isfx" data-suf="%"><input type="number" id="closingCostsCash" value="1.5" min="0" max="5" step="0.5" oninput="calc()"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: STRATEGY SELECTION -->
+  <div class="strategy-section">
+    <div class="step-label"><span class="step-num">4</span> Pick Your Strategy</div>
+    <!-- SFH strategy grid (all 4 options) -->
+    <div class="strategy-grid" id="sfh-strategy-grid">
+      <div class="strat-card" id="sc-flip" onclick="setMode('flip')">
+        <span class="strat-icon">🔨</span>
+        <div class="strat-name">Flip</div>
+        <div class="strat-desc">Buy, renovate, and sell for profit. Analyze net profit, ROI, and break-even.</div>
+        <span class="strat-tag" style="display:none;" id="st-flip">Selected</span>
+      </div>
+      <div class="strat-card" id="sc-ltr" onclick="setMode('ltr')">
+        <span class="strat-icon">🏠</span>
+        <div class="strat-name">Long-Term Rental</div>
+        <div class="strat-desc">Hold as a rental. Analyze cash flow, CoC return, and 10-year equity.</div>
+        <span class="strat-tag" style="display:none;" id="st-ltr">Selected</span>
+      </div>
+      <div class="strat-card" id="sc-str" onclick="setMode('str')">
+        <span class="strat-icon">🏖️</span>
+        <div class="strat-name">Short-Term Rental</div>
+        <div class="strat-desc">Airbnb or VRBO. Analyze occupancy, nightly rate, and revenue vs expenses.</div>
+        <span class="strat-tag" style="display:none;" id="st-str">Selected</span>
+      </div>
+      <div class="strat-card" id="sc-cmp" onclick="setMode('cmp')">
+        <span class="strat-icon">⚖️</span>
+        <div class="strat-name">Compare All</div>
+        <div class="strat-desc">Flip vs LTR vs STR side by side. Find the best strategy for this deal.</div>
+        <span class="strat-tag" style="display:none;" id="st-cmp">Selected</span>
+      </div>
+    </div>
+    <!-- MFH strategy grid (LTR only) -->
+    <div style="display:none;" id="mfh-strategy-grid">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;align-items:start;">
+        <div class="strat-card active-ltr" id="sc-mfh" onclick="setMode('mfh')" style="cursor:default;">
+          <span class="strat-icon">🏢</span>
+          <div class="strat-name">Multi-Family Rental</div>
+          <div class="strat-desc">Analyze cash flow, CoC, cap rate, and equity across all units.</div>
+          <span class="strat-tag" style="display:block;" id="st-mfh">Selected</span>
+        </div>
+        <div style="background:rgba(124,58,237,0.04);border:1px dashed var(--violet-border);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:20px;">💡</span>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;">Multi-family flip or STR?</div>
+            <div style="font-size:11px;color:var(--text-dim);line-height:1.5;">These strategies exist but are more complex. Switch to <strong>Single Family</strong> mode above to access Flip, STR, and Compare analysis — the math principles are the same, just scale your numbers.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: STRATEGY INPUTS -->
+
+  <!-- FLIP INPUTS -->
+  <div class="strat-inputs" id="inp-flip">
+    <div class="step-label"><span class="step-num">5</span> Flip Details</div>
+    <div class="card flip-top mb20">
+
+      <!-- Loan type toggle -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:10px;font-weight:600;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Loan Type</div>
+        <div style="display:flex;gap:8px;">
+          <button class="loan-btn active" id="btn-conv" onclick="setLoanType('conventional')">🏦 Conventional / Bridge</button>
+          <button class="loan-btn" id="btn-hm" onclick="setLoanType('hardmoney')">💸 Hard Money</button>
+        </div>
+      </div>
+
+      <!-- Shared inputs -->
+      <div class="g3" style="margin-bottom:14px;">
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Holding Period</span>Months from purchase to closing the sale. Every extra month costs holding costs.</span></span>Holding Period</div><div class="isfx" data-suf="mo"><input type="number" id="hm_f" value="6" min="1" max="36" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Selling Costs</span>Agent commissions + closing costs on sale side. Typically 8–10%. The number most beginners forget.</span></span>Selling Costs</div><div class="isfx" data-suf="%"><input type="number" id="sc_f" value="8" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+        <div class="ig" id="hm-pts-grp"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Loan Points</span>Upfront fee as % of loan. 1 pt = 1%. Conventional: 0–1 pts. Hard money: 2–3 pts.</span></span>Loan Points</div><div class="isfx" data-suf="pts"><input type="number" id="lp_f" value="0" min="0" max="5" step="0.5" oninput="calc()"></div></div>
+      </div>
+
+      <!-- HARD MONEY SECTION -->
+      <div id="hm-section" style="display:none;background:rgba(124,58,237,0.04);border:1.5px solid var(--violet-border);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;color:var(--violet);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">Hard Money Loan Structure</div>
+        <div class="g4" style="margin-bottom:12px;">
+          <div class="ig">
+            <div class="il"><span class="tt">?<span class="tb"><span class="tn">Purchase Loan Rate</span>Interest rate on the acquisition portion of the loan. Interest starts immediately at closing. Typically 10–13% for hard money.</span></span>Purchase Rate</div>
+            <div class="isfx" data-suf="%"><input type="number" id="hm_purchase_rate" value="12" min="0" max="20" step="0.25" oninput="calc()"></div>
+          </div>
+          <div class="ig">
+            <div class="il"><span class="tt">?<span class="tb"><span class="tn">Rehab Loan Rate</span>Interest rate on the renovation draw facility. Interest only accrues on amounts actually drawn, not the full approved budget.</span></span>Rehab Rate</div>
+            <div class="isfx" data-suf="%"><input type="number" id="hm_rehab_rate" value="12" min="0" max="20" step="0.25" oninput="calc()"></div>
+          </div>
+          <div class="ig">
+            <div class="il"><span class="tt">?<span class="tb"><span class="tn">LTV on Purchase</span>Loan-to-Value on the purchase price. Hard money lenders typically fund 65–80% of purchase.</span></span>Purchase LTV</div>
+            <div class="isfx" data-suf="%"><input type="number" id="hm_purchase_ltv" value="75" min="0" max="100" step="5" oninput="calc()"></div>
+          </div>
+          <div class="ig">
+            <div class="il"><span class="tt">?<span class="tb"><span class="tn">Rehab Budget Funded</span>% of your rehab budget the lender will fund via draws. Typically 100% for experienced borrowers.</span></span>Rehab Funded</div>
+            <div class="isfx" data-suf="%"><input type="number" id="hm_rehab_funded" value="100" min="0" max="100" step="5" oninput="calc()"></div>
+          </div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:10px;font-weight:600;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Draw Schedule <span class="tt">?<span class="tb"><span class="tn">Draw Schedule</span>How the rehab budget is released. Even = equal amounts monthly. Front-loaded = most cash early (demo/framing work). Back-loaded = most cash late (finishes/fixtures). Affects total interest paid on rehab budget.</span></span></div>
+          <div style="display:flex;gap:8px;">
+            <button class="draw-btn active" id="btn-draw-even" onclick="setDrawSchedule('even')">📊 Even</button>
+            <button class="draw-btn" id="btn-draw-front" onclick="setDrawSchedule('front')">⬆️ Front-loaded</button>
+            <button class="draw-btn" id="btn-draw-back" onclick="setDrawSchedule('back')">⬇️ Back-loaded</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <div style="background:var(--card);border-radius:var(--radius-xs);padding:9px 12px;border:1px solid var(--border-soft);">
+            <div style="font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Purchase Interest</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);" id="hm-purch-interest">—</div>
+          </div>
+          <div style="background:var(--card);border-radius:var(--radius-xs);padding:9px 12px;border:1px solid var(--border-soft);">
+            <div style="font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Rehab Draw Interest</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);" id="hm-rehab-interest">—</div>
+          </div>
+          <div style="background:var(--card);border-radius:var(--radius-xs);padding:9px 12px;border:1px solid var(--border-soft);">
+            <div style="font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">vs. Simple Model</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;" id="hm-savings">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auto-calculated holding cost breakdown -->
+      <div style="background:rgba(26,46,69,0.04);border-radius:var(--radius-sm);padding:12px 14px;">
+        <div style="font-size:10px;font-weight:600;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Estimated Holding Costs (auto-calculated)</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="holding-breakdown">
+          <div><div style="font-size:10px;color:var(--text-faint);">Interest/mo</div><div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);" id="hb-mort">—</div></div>
+          <div><div style="font-size:10px;color:var(--text-faint);">Tax/mo</div><div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);" id="hb-tax">—</div></div>
+          <div><div style="font-size:10px;color:var(--text-faint);">Insurance/mo</div><div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);" id="hb-ins">—</div></div>
+          <div><div style="font-size:10px;color:var(--text-faint);">Utilities/mo</div><div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);" id="hb-util">—</div></div>
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:11px;color:var(--text-dim);">Total monthly holding cost</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--violet);" id="hb-total">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- LTR INPUTS -->
+  <div class="strat-inputs" id="inp-ltr">
+    <div class="step-label"><span class="step-num">5</span> Rental Details</div>
+    <div class="card ltr-top mb20">
+      <div class="g5 mb8">
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Rent</span>Market rent after rehab. Be conservative — overestimating rent is a top investor mistake.</span></span>Monthly Rent</div><div class="ipfx" data-pre="$"><input type="number" id="mr_l" value="1800" step="50" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Vacancy Rate</span>% of year unit sits empty. 8% ≈ 1 month/year. Use 10–12% first year or softer markets.</span></span>Vacancy</div><div class="isfx" data-suf="%"><input type="number" id="vr_l" value="8" min="0" max="50" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Property Management</span>% of collected rent. Typically 8–10%. Model it even if self-managing — you won't always.</span></span>Prop Mgmt</div><div class="isfx" data-suf="%"><input type="number" id="pm_l" value="9" min="0" max="20" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">CapEx Reserve</span>% for big-ticket repairs: roof, HVAC, water heater. 8–12% standard. Don't skip this.</span></span>CapEx</div><div class="isfx" data-suf="%"><input type="number" id="cx_l" value="10" min="0" max="30" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Maintenance Reserve</span>% for ongoing repairs. 5–8% common post-rehab.</span></span>Maintenance</div><div class="isfx" data-suf="%"><input type="number" id="mt_l" value="6" min="0" max="20" oninput="calc()"></div></div>
+      </div>
+      <div class="g5">
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Appreciation</span>Expected annual value increase %. National avg 3–4%. Long-term projections only — don't count on appreciation to make a deal work.</span></span>Appreciation</div><div class="isfx" data-suf="%"><input type="number" id="ap_l" value="3" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Rent Growth</span>Expected annual rent increase %. National avg ~2–3%. Used in projections.</span></span>Rent Growth</div><div class="isfx" data-suf="%"><input type="number" id="rg_l" value="2" min="0" max="10" step="0.5" oninput="calc()"></div></div>
+        <div style="grid-column:span 3;background:rgba(26,46,69,0.04);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:16px;">ℹ️</span>
+          <span style="font-size:12px;color:var(--text-dim);">Property tax (<strong style="color:var(--text);" id="ltr-tax-display">—</strong>), insurance (<strong style="color:var(--text);" id="ltr-ins-display">—</strong>), and HOA (<strong style="color:var(--text);" id="ltr-hoa-display">—</strong>) pulled from Step 1.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STR INPUTS -->
+  <div class="strat-inputs" id="inp-str">
+    <div class="step-label"><span class="step-num">5</span> Short-Term Rental Details</div>
+    <div class="card str-top mb20">
+      <div class="g5 mb8">
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Avg Nightly Rate</span>Blended average across peak and off-peak. Don't use your best-case rate as the average.</span></span>Avg Nightly Rate</div><div class="ipfx" data-pre="$"><input type="number" id="nr_s" value="185" step="5" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Occupancy Rate</span>% of nights booked annually. 60–65% is realistic. 75%+ is a top performer. Don't use best-case.</span></span>Occupancy Rate</div><div class="isfx" data-suf="%"><input type="number" id="occ_s" value="62" min="0" max="100" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">STR Management</span>STR managers charge 20–30% of gross revenue vs 8–10% for LTR. High because of guest communication and turnover coordination.</span></span>STR Mgmt</div><div class="isfx" data-suf="%"><input type="number" id="smgmt_s" value="25" min="0" max="40" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Platform Fee</span>Airbnb charges ~3% host fee. VRBO varies. Deducted from gross revenue before management fee.</span></span>Platform Fee</div><div class="isfx" data-suf="%"><input type="number" id="pf_s" value="3" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Cleaning Fee / Stay</span>Cost per guest turnover. At 62% occupancy on avg 3-night stays, you're turning over ~75 times/year. Adds up fast.</span></span>Cleaning/Stay</div><div class="ipfx" data-pre="$"><input type="number" id="cl_s" value="125" step="5" oninput="calc()"></div></div>
+      </div>
+      <div class="g5 mb8">
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Avg Stay Length</span>Average nights per booking. Used to calculate cleaning frequency. Typical STR is 2–4 nights.</span></span>Avg Stay Length</div><div class="isfx" data-suf="nts"><input type="number" id="sl_s" value="3" min="1" max="30" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Furnishing Cost</span>One-time cost to fully furnish: furniture, linens, kitchen, decor. Typically $15–30K for a SFH. Added to cash required.</span></span>Furnishing Cost</div><div class="ipfx" data-pre="$"><input type="number" id="fc_s" value="20000" step="1000" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Utilities</span>STR landlord pays all utilities. Budget $200–500/mo. Higher than LTR because guests use more.</span></span>Monthly Utilities</div><div class="ipfx" data-pre="$"><input type="number" id="ut_s" value="300" step="25" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Supplies</span>Consumables restocked monthly: toiletries, paper goods, coffee, etc. $50–150/mo typical.</span></span>Monthly Supplies</div><div class="ipfx" data-pre="$"><input type="number" id="sp_s" value="100" step="25" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">STR Insurance</span>Annual short-term rental policy. More expensive than landlord insurance — budget $1,500–3,000/yr.</span></span>STR Insurance</div><div class="ipfx" data-pre="$"><input type="number" id="ins_s" value="2000" step="100" oninput="calc()"></div></div>
+      </div>
+      <div class="g5">
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual License / Permit</span>Many cities require STR permits and annual fees. Research your market — some cities ban STR entirely.</span></span>License/Permit</div><div class="ipfx" data-pre="$"><input type="number" id="lic_s" value="500" step="100" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">CapEx Reserve</span>% of revenue for big-ticket repairs. Use 6–10% — STR guests cause more wear and tear than LTR tenants.</span></span>CapEx Reserve</div><div class="isfx" data-suf="%"><input type="number" id="cx_s" value="8" min="0" max="20" oninput="calc()"></div></div>
+        <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Appreciation</span>Expected annual value increase %. National avg 3–4%.</span></span>Appreciation</div><div class="isfx" data-suf="%"><input type="number" id="ap_s" value="3" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+        <div style="grid-column:span 2;background:rgba(26,46,69,0.04);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:16px;">ℹ️</span>
+          <span style="font-size:12px;color:var(--text-dim);">Property tax (<strong style="color:var(--text);" id="str-tax-display">—</strong>), insurance uses STR policy above, HOA (<strong style="color:var(--text);" id="str-hoa-display">—</strong>) pulled from Step 1.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARE INPUTS -->
+  <div class="strat-inputs" id="inp-cmp">
+    <div class="step-label"><span class="step-num">5</span> Strategy Details</div>
+    <div class="three-col mb20">
+      <div class="card flip-top">
+        <div class="col-hd"><div class="badge bf">Flip</div></div>
+        <div class="g2">
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Holding Period</span>Months to close the sale.</span></span>Hold Period</div><div class="isfx" data-suf="mo"><input type="number" id="hm_c" value="6" min="1" max="36" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Selling Costs</span>Agent + closing on sale side. Typically 8–10%.</span></span>Selling Costs</div><div class="isfx" data-suf="%"><input type="number" id="sc_c" value="8" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Holding Costs</span>All monthly costs while you own.</span></span>Monthly Hold</div><div class="ipfx" data-pre="$"><input type="number" id="hc_c" value="1800" step="100" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Hard Money Points</span>Upfront fee as % of loan. Enter 0 for conventional.</span></span>HM Points</div><div class="isfx" data-suf="pts"><input type="number" id="lp_c" value="0" min="0" max="5" step="0.5" oninput="calc()"></div></div>
+        </div>
+      </div>
+      <div class="card ltr-top">
+        <div class="col-hd"><div class="badge bl">LTR</div></div>
+        <div class="g2">
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Rent</span>Market rent after rehab. Be conservative.</span></span>Monthly Rent</div><div class="ipfx" data-pre="$"><input type="number" id="mr_c" value="1800" step="50" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Vacancy Rate</span>% of year unit sits empty. 8% ≈ 1 mo/yr.</span></span>Vacancy</div><div class="isfx" data-suf="%"><input type="number" id="vr_c" value="8" min="0" max="50" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Property Management</span>% of collected rent. 8–10% typical.</span></span>Prop Mgmt</div><div class="isfx" data-suf="%"><input type="number" id="pm_c" value="9" min="0" max="20" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">CapEx + Maintenance</span>Combined % for repairs and replacements. 15–20% total is standard.</span></span>CapEx+Maint</div><div class="isfx" data-suf="%"><input type="number" id="cxmt_c" value="16" min="0" max="40" oninput="calc()"></div></div>
+          <div class="ig" style="grid-column:span 2;"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Fixed Costs</span>Property tax + insurance + HOA combined annual total. Look up the actual tax number.</span></span>Annual Fixed Costs</div><div class="ipfx" data-pre="$"><input type="number" id="afc_c" value="3600" step="100" oninput="calc()"></div></div>
+        </div>
+      </div>
+      <div class="card str-top">
+        <div class="col-hd"><div class="badge bs">STR</div></div>
+        <div class="g2">
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Avg Nightly Rate</span>Blended avg across peak and off-peak.</span></span>Nightly Rate</div><div class="ipfx" data-pre="$"><input type="number" id="nr_c" value="185" step="5" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Occupancy Rate</span>% of nights booked. 60–65% realistic.</span></span>Occupancy</div><div class="isfx" data-suf="%"><input type="number" id="occ_c" value="62" min="0" max="100" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">STR Management</span>STR managers charge 20–30% of revenue.</span></span>STR Mgmt</div><div class="isfx" data-suf="%"><input type="number" id="smgmt_c" value="25" min="0" max="40" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Platform Fee</span>Airbnb ~3% host fee.</span></span>Platform Fee</div><div class="isfx" data-suf="%"><input type="number" id="pf_c" value="3" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Monthly Operating Costs</span>Cleaning + supplies + utilities per month. Combined estimate.</span></span>Monthly Ops</div><div class="ipfx" data-pre="$"><input type="number" id="mop_c" value="700" step="25" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Fixed Costs</span>STR insurance + tax + HOA + permit. Annual total.</span></span>Annual Fixed</div><div class="ipfx" data-pre="$"><input type="number" id="safc_c" value="5400" step="100" oninput="calc()"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MFH INPUTS -->
+  <div class="strat-inputs" id="inp-mfh">
+    <div class="step-label"><span class="step-num">5</span> Unit Configuration</div>
+    <div class="card ltr-top mb20">
+      <div class="col-hd"><div class="badge bl">Multi-Family</div><div style="font-size:11px;color:var(--text-dim);">Configure your units — income aggregates automatically</div></div>
+
+      <!-- Simple unit inputs -->
+      <div class="g4" style="margin-bottom:12px;">
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Total Units</span>Total number of rentable units in the building — includes all unit types. A duplex = 2, triplex = 3, etc.</span></span>Total Units</div>
+          <div class="isfx" data-suf="units"><input type="number" id="mfh_units" value="4" min="2" max="100" step="1" oninput="calc()"></div>
+        </div>
+        <div class="ig">
+          <div class="il"><span class="tt">?<span class="tb"><span class="tn">Average Rent Per Unit</span>Average monthly rent across all units. If you have mixed unit types, use a weighted average — e.g. 3 units at $1,200 and 1 unit at $1,500 = ($3,600 + $1,500) ÷ 4 = $1,275 avg.</span></span>Avg Rent / Unit</div>
+          <div class="ipfx" data-pre="$"><input type="number" id="mfh_rent" value="1200" step="50" oninput="calc()"></div>
+        </div>
+        <div style="grid-column:span 2;background:rgba(5,150,105,0.06);border:1px solid var(--emerald-border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:12px;color:var(--text-dim);">Total monthly gross rent</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--emerald);" id="mfh-gross-display">—</span>
+        </div>
+      </div>
+
+      <!-- Shared expenses -->
+      <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border-soft);">
+        <div style="font-size:10px;font-weight:600;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Operating Expenses (applied across all units)</div>
+        <div class="g5 mb8">
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Vacancy Rate</span>% of year each unit sits empty on average. Multi-family typically runs lower vacancy than SFH — 5–7% is common for stabilized properties.</span></span>Vacancy</div><div class="isfx" data-suf="%"><input type="number" id="mfh_vr" value="7" min="0" max="50" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Property Management</span>% of collected rent. Multi-family management is typically 6–8% — slightly lower than SFH because of economies of scale.</span></span>Prop Mgmt</div><div class="isfx" data-suf="%"><input type="number" id="mfh_pm" value="8" min="0" max="20" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">CapEx Reserve</span>% of collected rent for capital expenditures. Multi-family has shared systems (roof, HVAC, plumbing) — 8–10% is standard.</span></span>CapEx</div><div class="isfx" data-suf="%"><input type="number" id="mfh_cx" value="9" min="0" max="30" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Maintenance Reserve</span>% of collected rent for ongoing repairs. Multi-family tends to require more maintenance per dollar than SFH.</span></span>Maintenance</div><div class="isfx" data-suf="%"><input type="number" id="mfh_mt" value="7" min="0" max="20" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Common Area Utilities</span>Monthly cost of utilities for common areas, exterior lighting, etc. Enter 0 if tenants pay all utilities.</span></span>Common Utilities/mo</div><div class="ipfx" data-pre="$"><input type="number" id="mfh_cu" value="150" step="25" oninput="calc()"></div></div>
+        </div>
+        <div class="g3">
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Appreciation</span>Expected annual value increase. Multi-family in strong rental markets often appreciates faster than SFH because value is tied to income.</span></span>Appreciation</div><div class="isfx" data-suf="%"><input type="number" id="mfh_ap" value="3" min="0" max="15" step="0.5" oninput="calc()"></div></div>
+          <div class="ig"><div class="il"><span class="tt">?<span class="tb"><span class="tn">Annual Rent Growth</span>Expected annual rent increase across all units. National avg ~2–3%.</span></span>Rent Growth</div><div class="isfx" data-suf="%"><input type="number" id="mfh_rg" value="2" min="0" max="10" step="0.5" oninput="calc()"></div></div>
+          <div style="background:rgba(5,150,105,0.06);border:1px solid var(--emerald-border);border-radius:var(--radius-sm);padding:10px 14px;display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">ℹ️</span>
+            <span style="font-size:11px;color:var(--text-dim);">Tax (<strong style="color:var(--text);" id="mfh-tax-display">—</strong>), insurance (<strong style="color:var(--text);" id="mfh-ins-display">—</strong>), HOA (<strong style="color:var(--text);" id="mfh-hoa-display">—</strong>) from Step 2.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: RESULTS -->
+  <div class="results-section" id="results-section" style="display:none;">
+    <div class="step-label"><span class="step-num">6</span> Analysis</div>
+
+    <!-- Thresholds toggle -->
+    <div class="thresh-toggle" onclick="toggleThresh()">⚙️ Set my return thresholds <span id="thresh-summary" style="color:var(--gold);font-weight:600;"></span></div>
+    <div class="thresh-body" id="thresh-body">
+      <div class="tgt-g" id="tgt-fp">
+        <label><span class="tt">?<span class="tb"><span class="tn">Min Flip Profit</span>Minimum net profit to execute a flip. Below this, the risk isn't worth it.</span></span>Min Flip Profit</label>
+        <div class="ipfx" data-pre="$"><input type="number" id="targetFlipProfit" value="25000" step="1000" oninput="calc();updateThreshSummary()"></div>
+      </div>
+      <div class="tgt-g" id="tgt-coc">
+        <label><span class="tt">?<span class="tb"><span class="tn">Min CoC Return</span>Minimum Cash-on-Cash return for any rental strategy. Most investors target 8–12%.</span></span>Min CoC Return</label>
+        <div class="isfx" data-suf="%"><input type="number" id="targetCoC" value="8" min="1" max="30" step="0.5" oninput="calc();updateThreshSummary()"></div>
+      </div>
+      <div class="tgt-g" id="tgt-cf">
+        <label><span class="tt">?<span class="tb"><span class="tn">Min Monthly Cash Flow</span>Minimum monthly cash flow after ALL expenses.</span></span>Min Monthly CF</label>
+        <div class="ipfx" data-pre="$"><input type="number" id="targetCashFlow" value="200" step="50" oninput="calc();updateThreshSummary()"></div>
+      </div>
+    </div>
+
+    <!-- VERDICT (always shown) -->
+    <div id="verdict-wrap"></div>
+
+    <!-- KEY METRICS (always shown) -->
+    <div id="key-metrics-wrap"></div>
+
+    <!-- 70% Rule -->
+    <div id="r70-wrap"></div>
+
+    <!-- DETAIL OUTPUTS (always shown) -->
+    <div id="detail-wrap"></div>
+
+    <!-- TAX INSIGHT -->
+    <div id="tax-wrap"></div>
+
+    <!-- ADVANCED (collapsed) -->
+    <div class="adv-toggle" onclick="toggleAdv()">
+      <div class="adv-toggle-lbl">📊 <span>Advanced Analysis — Stress Tests & Sensitivity</span></div>
+      <span class="adv-chevron" id="adv-chevron">▼</span>
+    </div>
+    <div class="adv-body" id="adv-body">
+      <div id="stress-wrap" style="padding-top:12px;"></div>
+      <div id="sens-wrap" style="padding-top:4px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== HELPERS =====
+const gv=id=>{const e=document.getElementById(id);return e?parseFloat(e.value)||0:0;};
+const fmt$=n=>{const v=isNaN(n)||n==null?0:n;const a=Math.abs(v),s=a>=1e6?`$${(a/1e6).toFixed(2)}M`:a>=1000?`$${(a/1000).toFixed(1)}K`:`$${a.toFixed(0)}`;return v<0?`-${s}`:s;};
+const fmtF=n=>{const v=isNaN(n)||n==null?0:n;return v<0?`-$${Math.abs(v).toLocaleString('en-US',{maximumFractionDigits:0})}`:`$${v.toLocaleString('en-US',{maximumFractionDigits:0})}`;};
+const fmtP=n=>`${(isNaN(n)||n==null?0:n).toFixed(1)}%`;
+function setT(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function colorC(v,pos='pos',neg='neg'){return v>0?pos:v<0?neg:'';}
+
+// ===== PROPERTY TYPE =====
+let propType='sfh';
+function setPropType(t){
+  propType=t;
+  // Toggle property type cards
+  document.getElementById('pt-sfh').classList.toggle('active',t==='sfh');
+  document.getElementById('pt-mfh').classList.toggle('active',t==='mfh');
+  document.getElementById('pt-sfh-tag').style.display=t==='sfh'?'':'none';
+  document.getElementById('pt-mfh-tag').style.display=t==='mfh'?'':'none';
+  // Toggle strategy grids
+  document.getElementById('sfh-strategy-grid').style.display=t==='sfh'?'':'none';
+  document.getElementById('mfh-strategy-grid').style.display=t==='mfh'?'':'none';
+  // If switching to mfh, set mode to mfh and hide sfh results
+  if(t==='mfh'){
+    // Deselect any sfh mode
+    ['flip','ltr','str','cmp'].forEach(m=>{
+      const sc=document.getElementById(`sc-${m}`);
+      if(sc)sc.classList.remove(`active-flip`,`active-ltr`,`active-str`,`active-cmp`);
+      const st=document.getElementById(`st-${m}`);
+      if(st)st.style.display='none';
+      const inp=document.getElementById(`inp-${m}`);
+      if(inp)inp.classList.remove('active');
+    });
+    setMode('mfh');
+  } else {
+    // Coming back to sfh from mfh
+    const mfhInp=document.getElementById('inp-mfh');
+    if(mfhInp)mfhInp.classList.remove('active');
+    currentMode=null;
+    document.getElementById('results-section').style.display='none';
+  }
+}
+
+
+// ===== LOAN TYPE =====
+let loanType='conventional';
+let drawSchedule='even';
+
+function setLoanType(t){
+  loanType=t;
+  document.getElementById('btn-conv').classList.toggle('active',t==='conventional');
+  document.getElementById('btn-hm').classList.toggle('active',t==='hardmoney');
+  document.getElementById('hm-section').style.display=t==='hardmoney'?'block':'none';
+  // Points: default to 2 for HM, 0 for conventional
+  const lp=document.getElementById('lp_f');
+  if(lp&&lp.value==='0'&&t==='hardmoney')lp.value=2;
+  if(lp&&t==='conventional')lp.value=0;
+  calc();
+}
+function setDrawSchedule(d){
+  drawSchedule=d;
+  ['even','front','back'].forEach(s=>{
+    document.getElementById(`btn-draw-${s}`).classList.toggle('active',s===d);
+  });
+  calc();
+}
+
+// Draw multiplier: fraction of rehab budget outstanding at each month
+// Returns avg outstanding balance as fraction of total rehab budget
+function getDrawMultiplier(schedule,hm){
+  // For a hold of hm months, calculate weighted average outstanding balance
+  // Even: draws spread evenly → avg outstanding = 50% of budget
+  // Front-loaded: 60% drawn in first half → avg outstanding ~65%
+  // Back-loaded: 60% drawn in second half → avg outstanding ~35%
+  if(schedule==='even') return 0.50;
+  if(schedule==='front') return 0.65;
+  if(schedule==='back') return 0.35;
+  return 0.50;
+}
+
+// ===== FLIP ENGINE =====
+function cFlip(s,hm,sc,lp,arvOv){
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+
+  let monthlyInterest=0;
+  let totalInterest=0;
+  let purchaseInterest=0;
+  let rehabDrawInterest=0;
+  let simpleModelInterest=0;
+
+  if(s.isCash){
+    monthlyInterest=0;
+  } else if(loanType==='hardmoney'&&!s.isCash){
+    const purchaseLTV=gv('hm_purchase_ltv')/100;
+    const rehabFunded=gv('hm_rehab_funded')/100;
+    const purchaseRate=gv('hm_purchase_rate')/100/12;
+    const rehabRate=gv('hm_rehab_rate')/100/12;
+    const purchaseLoan=s.purchasePrice*purchaseLTV;
+    const rehabLoan=rehab*rehabFunded;
+    // Purchase interest: full loan from day 1
+    purchaseInterest=purchaseLoan*purchaseRate*hm;
+    // Rehab interest: accrues on drawn amounts only
+    const drawMult=getDrawMultiplier(drawSchedule||'even',hm);
+    rehabDrawInterest=rehabLoan*rehabRate*hm*drawMult;
+    totalInterest=purchaseInterest+rehabDrawInterest;
+    monthlyInterest=totalInterest/hm;
+    // What simple model would have charged (full loan from day 1)
+    simpleModelInterest=(purchaseLoan+rehabLoan)*(gv('hm_purchase_rate')/100/12)*hm;
+  } else {
+    // Conventional: standard mortgage payment
+    const loan=s.purchasePrice*(1-s.downPayment/100);
+    monthlyInterest=cMort(loan,s.interestRate,s.loanTerm);
+  }
+
+  const loan=loanType==='hardmoney'
+    ? s.purchasePrice*(gv('hm_purchase_ltv')/100)
+    : s.purchasePrice*(1-s.downPayment/100);
+  const pts=loan*(lp/100);
+  const monthlyTax=s.propTax/12;
+  const monthlyIns=s.propInsurance/12;
+  const monthlyUtil=s.propUtilities;
+  const monthlyHolding=monthlyInterest+monthlyTax+monthlyIns+monthlyUtil;
+  const holding=monthlyHolding*hm;
+  const allIn=s.purchasePrice+closeBuy+rehab+holding+pts;
+  const sale=arvOv||s.arv;
+  const sellCost=sale*(sc/100);
+  const net=sale-sellCost-allIn;
+
+  // Cash required differs for HM (only your equity portion)
+  let cash;
+  if(s.isCash){
+    cash=s.purchasePrice+closeBuy+rehab;
+  } else if(loanType==='hardmoney'&&!s.isCash){
+    const purchaseLTV=gv('hm_purchase_ltv')/100;
+    const rehabFunded=gv('hm_rehab_funded')/100;
+    cash=s.purchasePrice*(1-purchaseLTV)+closeBuy+rehab*(1-rehabFunded)+pts;
+  } else {
+    cash=s.purchasePrice*(s.downPayment/100)+closeBuy+rehab+pts;
+  }
+
+  const roi=cash>0?(net/cash)*100:0;
+  const annROI=(hm>0&&isFinite(roi))?(roi/hm)*12:0;
+  return{rehab,closeBuy,loan,pts,holding,monthlyHolding,monthlyMortgageInterest:monthlyInterest,monthlyTax,monthlyIns,monthlyUtil,allIn,sale,sellCost,net,cash,roi,annROI,be:allIn+sellCost,margin:sale>0?(net/sale)*100:0,purchaseInterest,rehabDrawInterest,simpleModelInterest,totalInterest};
+}
+
+// ===== PAY MODE =====
+let payMode='financing';
+function setPayMode(m){
+  payMode=m;
+  document.getElementById('btn-financing').classList.toggle('active',m==='financing');
+  document.getElementById('btn-cash').classList.toggle('active',m==='cash');
+  document.getElementById('financing-section').style.display=m==='financing'?'':'none';
+  document.getElementById('cash-section').style.display=m==='cash'?'':'none';
+  // Hide HM points and HM section for cash buyers
+  const hmPts=document.getElementById('hm-pts-grp');
+  const hmSec=document.getElementById('hm-section');
+  if(hmPts)hmPts.style.display=m==='cash'?'none':'';
+  if(hmSec&&m==='cash')hmSec.style.display='none';
+  calc();
+}
+
+// ===== UI TOGGLES =====
+function toggleFin(){
+  const body=document.getElementById('fin-body');
+  const chev=document.getElementById('fin-chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+function updateFinSummary(){
+  const dp=gv('downPayment'),ir=gv('interestRate'),lt=gv('loanTerm');
+  setT('fin-summary',`${dp}% down · ${ir}% · ${lt} yrs`);
+}
+function toggleThresh(){
+  const body=document.getElementById('thresh-body');
+  body.classList.toggle('open');
+}
+function updateThreshSummary(){
+  const fp=gv('targetFlipProfit'),coc=gv('targetCoC'),cf=gv('targetCashFlow');
+  setT('thresh-summary',`Flip ≥${fmt$(fp)} · CoC ≥${fmtP(coc)} · CF ≥${fmt$(cf)}/mo`);
+}
+function toggleAdv(){
+  const body=document.getElementById('adv-body');
+  const chev=document.getElementById('adv-chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// ===== MODE =====
+let currentMode=null;
+function setMode(m){
+  currentMode=m;
+  const modes=['flip','ltr','str','cmp','mfh'];
+  modes.forEach(mode=>{
+    const sc=document.getElementById(`sc-${mode}`);
+    const st=document.getElementById(`st-${mode}`);
+    const inp=document.getElementById(`inp-${mode}`);
+    if(sc){sc.classList.remove('active-flip','active-ltr','active-str','active-cmp');if(st)st.style.display='none';}
+    if(inp)inp.classList.remove('active');
+    if(mode===m){
+      if(sc){sc.classList.add(`active-${m==='mfh'?'ltr':m}`);if(st)st.style.display='';}
+      if(inp)inp.classList.add('active');
+    }
+  });
+  document.getElementById('results-section').style.display='block';
+  const tgtFP=document.getElementById('tgt-fp');
+  const tgtCoC=document.getElementById('tgt-coc');
+  const tgtCF=document.getElementById('tgt-cf');
+  if(tgtFP)tgtFP.style.display=(m==='ltr'||m==='str'||m==='mfh')?'none':'flex';
+  if(tgtCoC)tgtCoC.style.display=m==='flip'?'none':'flex';
+  if(tgtCF)tgtCF.style.display=m==='flip'?'none':'flex';
+  updateThreshSummary();
+  calc();
+  setTimeout(()=>document.getElementById('results-section').scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+
+// ===== CALC ENGINES =====
+function getS(){
+  const isCash=payMode==='cash';
+  return{
+    purchasePrice:gv('purchasePrice'),arv:gv('arv'),rehabCost:gv('rehabCost'),rehabContingency:gv('rehabContingency'),
+    closingCostsBuy:isCash?gv('closingCostsCash'):gv('closingCostsBuy'),
+    downPayment:isCash?100:gv('downPayment'),
+    interestRate:isCash?0:gv('interestRate'),
+    loanTerm:isCash?30:gv('loanTerm'),
+    isCash,
+    // Shared property costs
+    propTax:gv('propTax'),propInsurance:gv('propInsurance'),propHOA:gv('propHOA'),propUtilities:gv('propUtilities'),
+    targetCoC:gv('targetCoC'),targetFlipProfit:gv('targetFlipProfit'),targetCashFlow:gv('targetCashFlow')
+  };
+}
+function cFlip(s,hm,sc,lp,arvOv){
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const loan=s.purchasePrice*(1-s.downPayment/100);
+  const pts=loan*(lp/100);
+  // Auto-calculate monthly holding: mortgage interest + tax + insurance + utilities
+  const monthlyMortgageInterest=s.isCash?0:cMort(loan,s.interestRate,s.loanTerm);
+  const monthlyTax=s.propTax/12;
+  const monthlyIns=s.propInsurance/12;
+  const monthlyUtil=s.propUtilities;
+  const monthlyHolding=monthlyMortgageInterest+monthlyTax+monthlyIns+monthlyUtil;
+  const holding=monthlyHolding*hm;
+  const allIn=s.purchasePrice+closeBuy+rehab+holding+pts;
+  const sale=arvOv||s.arv;
+  const sellCost=sale*(sc/100);
+  const net=sale-sellCost-allIn;
+  const cash=s.isCash?s.purchasePrice+closeBuy+rehab:s.purchasePrice*(s.downPayment/100)+closeBuy+rehab+pts;
+  const roi=cash>0?(net/cash)*100:0;
+  const annROI=(hm>0&&isFinite(roi))?(roi/hm)*12:0;
+  return{rehab,closeBuy,loan,pts,holding,monthlyHolding,monthlyMortgageInterest,monthlyTax,monthlyIns,monthlyUtil,allIn,sale,sellCost,net,cash,roi,annROI,be:allIn+sellCost,margin:sale>0?(net/sale)*100:0};
+}
+function cMort(p,ar,ty){if(!ar||!ty)return 0;const r=ar/100/12,n=ty*12;return p*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);}
+// ===== MFH ENGINE =====
+function cMFH(s,totalUnits,avgRent,vr,pm,cx,mt,cu,pt,ins,hoa,irOv){
+  const ir=irOv||s.interestRate;
+  const loan=s.purchasePrice*(1-s.downPayment/100);
+  const mort=cMort(loan,ir,s.loanTerm);
+  const grossRent=totalUnits*avgRent*12;
+  const eff=grossRent*(1-vr/100);
+  const em=eff/12;
+  const mgmt=em*(pm/100);
+  const capex=em*(cx/100);
+  const maint=em*(mt/100);
+  const fixedMonthly=pt/12+ins/12+hoa/12+cu;
+  const opex=mgmt+capex+maint+fixedMonthly;
+  const noi=eff-opex*12;
+  const ds=mort*12;
+  const cf=em-opex-mort;
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cash=s.isCash?s.purchasePrice+closeBuy+rehab:s.purchasePrice*(s.downPayment/100)+closeBuy+rehab;
+  const coc=cash>0?(cf*12/cash)*100:0;
+  const cap=s.purchasePrice>0?(noi/s.purchasePrice)*100:0;
+  const grm=grossRent>0?s.purchasePrice/grossRent:0;
+  const beo=em>0?((opex+mort)/em)*100:0;
+  const perUnitCF=totalUnits>0?cf/totalUnits:0;
+  return{grossRent,eff,em,opex,noi,ds,cf,cash,coc,cap,grm,beo,totalUnits,perUnitCF,mort,loan};
+}
+function cLT_MFH(s,totalUnits,avgRent,vr,pm,cx,mt,cu,ap,rg,yrs,sellCostPct){
+  const sc=sellCostPct||8;
+  const r=s.interestRate/100/12;
+  const mort=cMort(s.purchasePrice*(1-s.downPayment/100),s.interestRate,s.loanTerm);
+  let bal=s.purchasePrice*(1-s.downPayment/100);
+  for(let m=0;m<yrs*12;m++){const ip=bal*r;bal=Math.max(0,bal-(mort-ip));}
+  const pv=s.purchasePrice*Math.pow(1+ap/100,yrs);
+  const netSaleProceeds=pv*(1-sc/100)-bal;
+  let cf=0,rent=avgRent;
+  for(let y=0;y<yrs;y++){
+    const rn=cMFH(s,totalUnits,rent,vr,pm,cx,mt,cu,s.propTax,s.propInsurance,s.propHOA);
+    cf+=rn.cf*12;
+    rent*=(1+rg/100);
+  }
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cashIn=s.isCash?s.purchasePrice+closeBuy+rehab:s.purchasePrice*(s.downPayment/100)+closeBuy+rehab;
+  const annualizedReturn=cashIn>0&&(cf+netSaleProceeds)>0?((Math.pow((cf+netSaleProceeds)/cashIn,1/yrs)-1)*100):0;
+  return{pv,eq:pv-bal,cf,bal,netSaleProceeds,annualizedReturn,cashIn};
+}
+function cLTR(s,mr,vr,pm,cx,mt,pt,ins,hoa,irOv){
+  const ir=irOv||s.interestRate;
+  const loan=s.purchasePrice*(1-s.downPayment/100);
+  const mort=cMort(loan,ir,s.loanTerm);
+  const gross=mr*12,eff=gross*(1-vr/100),em=eff/12;
+  const opex=em*(pm/100)+em*(cx/100)+em*(mt/100)+pt/12+ins/12+hoa/12;
+  const noi=eff-opex*12,ds=mort*12,cf=em-opex-mort;
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cash=s.purchasePrice*(s.downPayment/100)+closeBuy+rehab;
+  const coc=cash>0?(cf*12/cash)*100:0;
+  const cap=s.purchasePrice>0?(noi/s.purchasePrice)*100:0;
+  const grm=gross>0?s.purchasePrice/gross:0;
+  const beo=mr>0?((opex+mort)/mr)*100:0;
+  return{loan,mort,gross,eff,em,opex,noi,ds,cf,cash,coc,cap,grm,beo};
+}
+// LTR simplified for compare (combined fixed costs)
+function cLTR_c(s,mr,vr,pm,cxmt,afc,irOv){
+  const ir=irOv||s.interestRate;
+  const loan=s.purchasePrice*(1-s.downPayment/100);
+  const mort=cMort(loan,ir,s.loanTerm);
+  const gross=mr*12,eff=gross*(1-vr/100),em=eff/12;
+  const opex=em*(pm/100)+em*(cxmt/100)+afc/12;
+  const noi=eff-opex*12,ds=mort*12,cf=em-opex-mort;
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cash=s.purchasePrice*(s.downPayment/100)+closeBuy+rehab;
+  const coc=cash>0?(cf*12/cash)*100:0;
+  const cap=s.purchasePrice>0?(noi/s.purchasePrice)*100:0;
+  const grm=gross>0?s.purchasePrice/gross:0;
+  const beo=mr>0?((opex+mort)/mr)*100:0;
+  return{gross,eff,noi,ds,cf,cash,coc,cap,grm,beo,opex};
+}
+function cSTR(s,nr,occ,pf,smPct,cl,slLen,fc,ut,sp,ins,pt,hoa,lic,cx,irOv){
+  const ir=irOv||s.interestRate;
+  const loan=s.purchasePrice*(1-s.downPayment/100);
+  const mort=cMort(loan,ir,s.loanTerm);
+  const bookedNights=365*(occ/100);
+  const grossRev=nr*bookedNights;
+  const platformFee=grossRev*(pf/100);
+  const mgmtFee=grossRev*(smPct/100);
+  const netRev=grossRev-platformFee-mgmtFee;
+  const turnovers=slLen>0?bookedNights/slLen:0;
+  const annCleaning=turnovers*cl;
+  const annFixed=ins+pt+hoa+lic+(ut*12)+(sp*12);
+  const annCapex=grossRev*(cx/100);
+  const totalOpex=annCleaning+annFixed+annCapex;
+  const noi=netRev-totalOpex;
+  const ds=mort*12;
+  const annCF=noi-ds;
+  const monthlyCF=annCF/12;
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cash=s.purchasePrice*(s.downPayment/100)+closeBuy+rehab+fc;
+  const coc=cash>0?(annCF/cash)*100:0;
+  const cap=s.purchasePrice>0?(noi/s.purchasePrice)*100:0;
+  const revpan=grossRev/365;
+  return{grossRev,platformFee,mgmtFee,netRev,annCleaning,totalOpex,noi,ds,annCF,monthlyCF,cash,coc,cap,revpan,annFixed,annCapex};
+}
+function cSTR_c(s,nr,occ,smPct,pf,mop,safc,irOv){
+  const ir=irOv||s.interestRate;
+  const loan=s.purchasePrice*(1-s.downPayment/100);
+  const mort=cMort(loan,ir,s.loanTerm);
+  const bookedNights=365*(occ/100);
+  const grossRev=nr*bookedNights;
+  const netRev=grossRev*(1-pf/100)*(1-smPct/100);
+  const annOpex=(mop*12)+safc;
+  const noi=netRev-annOpex;
+  const ds=mort*12;
+  const annCF=noi-ds;
+  const monthlyCF=annCF/12;
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cash=s.purchasePrice*(s.downPayment/100)+closeBuy+rehab;
+  const coc=cash>0?(annCF/cash)*100:0;
+  const cap=s.purchasePrice>0?(noi/s.purchasePrice)*100:0;
+  const revpan=grossRev/365;
+  return{grossRev,netRev,annOpex,noi,ds,annCF,monthlyCF,cash,coc,cap,revpan};
+}
+function cLT_LTR(s,mr,vr,pm,cx,mt,pt,ins,hoa,ap,rg,yrs,sellCostPct){
+  const sc=sellCostPct||8;
+  const r=s.interestRate/100/12;
+  const mort=cMort(s.purchasePrice*(1-s.downPayment/100),s.interestRate,s.loanTerm);
+  let bal=s.purchasePrice*(1-s.downPayment/100);
+  for(let m=0;m<yrs*12;m++){const ip=bal*r;bal=Math.max(0,bal-(mort-ip));}
+  const pv=s.purchasePrice*Math.pow(1+ap/100,yrs);
+  const eq=pv-bal;
+  const netSaleProceeds=pv*(1-sc/100)-bal; // proceeds after selling costs minus remaining mortgage
+  let cf=0,rent=mr;
+  for(let y=0;y<yrs;y++){const rn=cLTR(s,rent,vr,pm,cx,mt,pt,ins,hoa);cf+=rn.cf*12;rent*=(1+rg/100);}
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cashIn=s.isCash?s.purchasePrice+closeBuy+rehab:s.purchasePrice*(s.downPayment/100)+closeBuy+rehab;
+  const totalReturn=cf+netSaleProceeds-cashIn; // net gain over entire hold
+  const annualizedReturn=cashIn>0?((Math.pow((cf+netSaleProceeds)/cashIn,1/yrs)-1)*100):0;
+  return{pv,eq,cf,bal,netSaleProceeds,totalReturn,annualizedReturn,cashIn};
+}
+function cLT_STR(s,nr,occ,pf,smPct,cl,slLen,fc,ut,sp,ins,pt,hoa,lic,cx,ap,yrs,sellCostPct){
+  const sc=sellCostPct||8;
+  const r=s.interestRate/100/12;
+  const mort=cMort(s.purchasePrice*(1-s.downPayment/100),s.interestRate,s.loanTerm);
+  let bal=s.purchasePrice*(1-s.downPayment/100);
+  for(let m=0;m<yrs*12;m++){const ip=bal*r;bal=Math.max(0,bal-(mort-ip));}
+  const pv=s.purchasePrice*Math.pow(1+ap/100,yrs);
+  const eq=pv-bal;
+  const netSaleProceeds=pv*(1-sc/100)-bal;
+  let cf=0,rate=nr;
+  for(let y=0;y<yrs;y++){const sn=cSTR(s,rate,occ,pf,smPct,cl,slLen,fc,ut,sp,ins,pt,hoa,lic,cx);cf+=sn.annCF;rate*=1.02;}
+  const closeBuy=s.purchasePrice*(s.closingCostsBuy/100);
+  const rehab=s.rehabCost*(1+s.rehabContingency/100);
+  const cashIn=s.isCash?s.purchasePrice+closeBuy+rehab+fc:s.purchasePrice*(s.downPayment/100)+closeBuy+rehab+fc;
+  const totalReturn=cf+netSaleProceeds-cashIn;
+  const annualizedReturn=cashIn>0?((Math.pow((cf+netSaleProceeds)/cashIn,1/yrs)-1)*100):0;
+  return{pv,eq,cf,bal,netSaleProceeds,totalReturn,annualizedReturn,cashIn};
+}
+
+// ===== HTML BUILDERS =====
+function build70(s,rehab){
+  const mao=(s.arv*0.7)-rehab;
+  const pass=s.purchasePrice<=mao;
+  return`<div class="r70 ${pass?'r70p':'r70f'} mb16">
+    <div style="font-size:20px;">${pass?'✅':'❌'}</div>
+    <div class="r70t"><div class="r70h">${pass?`Passes 70% Rule — at or below max allowable offer`:`Fails 70% Rule — ${fmtF(s.purchasePrice-mao)} over MAO`}</div>
+    <div class="r70d">MAO = (ARV × 70%) − Rehab. The investor's quick filter for flip viability.</div></div>
+    <div><div class="r70ml">Max Allowable Offer</div><div class="r70m">${fmtF(mao)}</div></div>
+  </div>`;
+}
+function buildVerdict(s,fl,rn,mode){
+  const fg=fl&&fl.net>=s.targetFlipProfit&&fl.annROI>=15;
+  const rg=rn&&rn.coc>=s.targetCoC&&rn.cf>=s.targetCashFlow;
+  let cls,icon,main,sub,rec;
+  if(mode==='flip'){
+    if(fg){cls='v-green';icon='🏆';main='Strong flip — hits your targets';sub=`Nets ${fmtF(fl.net)} at ${fmtP(fl.annROI)} annualized ROI. Cash required: ${fmtF(fl.cash)}.`;rec='Buy it';}
+    else if(fl.net>0&&fl.annROI>0){cls='v-yellow';icon='⚠️';main='Marginal flip — negotiate harder';sub=`Profit of ${fmtF(fl.net)} doesn't clear your ${fmtF(s.targetFlipProfit)} threshold. Try offering ${fmtF(s.purchasePrice*0.93)}.`;rec='Negotiate';}
+    else{cls='v-red';icon='🚫';main='Pass — flip loses money';sub=`All-in cost exceeds sale price after selling costs. This deal needs ${fmtF(Math.abs(fl.net))} more room.`;rec='Pass';}
+  } else if(mode==='ltr'||mode==='str'){
+    const label=mode==='str'?'STR':'rental';
+    const totalReturnGood=rn.lt5&&rn.lt5.annualizedReturn>=s.targetCoC;
+    if(rg){cls='v-green';icon='🏆';main=`Strong ${label} — hits your targets`;sub=`${fmtP(rn.coc)} CoC return with ${fmtF(rn.cf)}/mo cash flow. Cash required: ${fmtF(rn.cash)}.`;rec='Buy it';}
+    else if(totalReturnGood&&rn.lt5){
+      cls='v-green';icon='📈';
+      main=`Equity play — negative CF, strong total return`;
+      sub=`Cash flow is ${fmtF(rn.cf)}/mo, but ${fmtP(rn.lt5.annualizedReturn)} annualized total return over 5 years when appreciation is factored in. A deliberate equity strategy.`;
+      rec='Hold';
+    }
+    else if(rn.cf>0){cls='v-yellow';icon='⚠️';main=`Marginal ${label} — below your targets`;sub=`${fmtP(rn.coc)} CoC misses your ${fmtP(s.targetCoC)} target. Positive cash flow but thin margin.`;rec='Negotiate';}
+    else if(rn.lt5&&rn.lt5.annualizedReturn>0){
+      cls='v-yellow';icon='⚠️';
+      main='Negative CF — equity may save it';
+      sub=`Bleeding ${fmtF(Math.abs(rn.cf))}/mo. But with ${fmtP(mode==='str'?gv('ap_s'):gv('ap_l'))} appreciation, 5-year total return is ${fmtP(rn.lt5.annualizedReturn)} annualized. Check if you can carry the loss.`;
+      rec='Evaluate';
+    }
+    else{cls='v-red';icon='🚫';main=`Pass — ${label} bleeds cash`;sub=`Negative cash flow of ${fmtF(Math.abs(rn.cf))}/mo with insufficient equity upside to compensate. Needs higher revenue or lower purchase price.`;rec='Pass';}
+  } else {
+    // compare mode
+    const scores={flip:fl?fl.annROI:-999,ltr:rn?rn.ltr.coc:-999,str:rn?rn.str.coc:-999};
+    const best=Object.entries(scores).reduce((a,b)=>b[1]>a[1]?b:a);
+    if(best[1]>0){cls='v-green';icon='📊';main='Deal works — best strategy identified';sub=`${best[0]==='flip'?'🔨 Flip':best[0]==='ltr'?'🏠 LTR':'🏖️ STR'} wins with the highest return on this deal.`;rec=best[0]==='flip'?'Flip':best[0]==='ltr'?'LTR':'STR';}
+    else{cls='v-red';icon='🚫';main="Pass — no strategy pencils at this price";sub=`Flip loses ${fmtF(Math.abs(fl.net))}. LTR returns ${fmtP(rn.ltr.coc)} CoC. STR returns ${fmtP(rn.str.coc)} CoC. Negotiate price down.`;rec='Pass';}
+  }
+  return`<div class="verdict-hero ${cls} mb20">
+    <div class="v-icon">${icon}</div>
+    <div><div class="v-main">${main}</div><div class="v-sub">${sub}</div></div>
+    <div class="v-rec"><div class="v-rec-lbl">${mode==='cmp'?'Winner':'Verdict'}</div><div class="v-rec-val">${rec}</div></div>
+  </div>`;
+}
+function buildKM(metrics){
+  return`<div class="key-metrics mb20">${metrics.map(m=>`<div class="km-card">
+    <div class="km-label">${m.label}</div>
+    <div class="km-val ${m.cls||''}">${m.val}</div>
+    ${m.sub?`<div class="km-sub">${m.sub}</div>`:''}
+  </div>`).join('')}</div>`;
+}
+function mrow(label,val,cls='',tt=''){
+  const ttHtml=tt?`<span class="tt">?<span class="tb"><span class="tn">${tt.split('|')[0]}</span>${tt.split('|')[1]||''}</span></span>`:'';
+  return`<div class="mrow"><span class="ml">${ttHtml}${label}</span><span class="mv ${cls}">${val}</span></div>`;
+}
+function buildAmg(ltFn){
+  return`<div class="amg">${[1,2,3,5,10].map(yr=>{const lt=ltFn(yr);return`<div class="amc"><div class="amy">Yr ${yr}</div><div class="amv">${fmt$(lt.pv)}</div><div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Eq: ${fmt$(lt.eq)}</div><div style="font-size:10px;color:var(--green);margin-top:1px;">CF: ${fmt$(lt.cf)}</div></div>`;}).join('')}</div>`;
+}
+
+function buildEquityTable(s,ltFn,apId){
+  const apRate=gv(apId||'ap_l');
+  const years=[1,2,3,5,7,10];
+  const rows=years.map(yr=>{
+    const lt=ltFn(yr);
+    const cfColor=lt.cf>=0?'var(--green)':'var(--red)';
+    const trColor=lt.annualizedReturn>=s.targetCoC?'var(--green)':lt.annualizedReturn>0?'var(--gold)':'var(--red)';
+    return`<tr>
+      <td style="font-weight:600;color:var(--text);font-size:12px;">Year ${yr}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;">${fmt$(lt.pv)}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);">${fmt$(lt.eq)}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:${cfColor};">${fmt$(lt.cf)}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);">${fmt$(lt.netSaleProceeds)}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:${trColor};font-weight:600;">${fmtP(lt.annualizedReturn)}</td>
+    </tr>`;
+  });
+  return`<div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead>
+        <tr style="background:#eeeae2;">
+          <th style="text-align:left;padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);">Year</th>
+          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Property Value</span>Estimated value at this year based on your appreciation rate assumption.</span></span> Prop Value</th>
+          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Equity</span>Property value minus remaining mortgage balance. What you own outright at this point.</span></span> Equity</th>
+          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Cumulative Cash Flow</span>Total net cash flow collected across all years to this point. Can be negative.</span></span> Cum. CF</th>
+          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Net Sale Proceeds</span>What you'd walk away with if you sold this year — after paying off the mortgage and selling costs (~8%). This is your cash-out windfall.</span></span> Net Proceeds</th>
+          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Annualized Total Return</span>Your annualized return if you sold in this year — cumulative cash flow plus net sale proceeds divided by initial cash invested. The full picture.</span></span> Ann. Total Return</th>
+        </tr>
+      </thead>
+      <tbody style="font-family:'DM Mono',monospace;">
+        ${rows.join('')}
+      </tbody>
+    </table>
+    <div style="font-size:10px;color:var(--text-faint);margin-top:6px;font-style:italic;">Net proceeds assume 8% selling costs. Appreciation at ${fmtP(apRate)} annually. Total return = (cum. CF + net proceeds) ÷ cash invested, annualized.</div>
+  </div>`;
+}
+
+// ===== SLIDERS HTML =====
+function sliderCard(id,label,min,max,step,val,unit,tt,ia,ib,la,lb){
+  return`<div class="sl-card">
+    <div class="sl-hd"><div class="sl-lbl"><span class="tt">?<span class="tb"><span class="tn">${tt}</span></span></span>${label}</div><div class="sl-val" id="sv_${id}">${unit==='%'?val+'%':unit==='+%'?'+0%':unit==='mo'?'+0 mo':val+unit}</div></div>
+    <input type="range" id="sl_${id}" min="${min}" max="${max}" step="${step}" value="${val}" oninput="slUp('${id}')">
+    <div class="sl-imp"><div class="sl-ii"><div class="sl-il">${la}</div><div class="sl-iv" id="si_${id}_a">—</div></div><div class="sl-ii"><div class="sl-il">${lb}</div><div class="sl-iv" id="si_${id}_b">—</div></div></div>
+  </div>`;
+}
+
+// ===== SENSITIVITY =====
+function buildSensHTML(mode,s){
+  return`<div>
+    <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:16px;">Sensitivity Analysis</div>
+    <div class="sens-ctrl">
+      <div style="display:flex;align-items:center;gap:7px;"><span class="sc-lbl">Rows</span>${buildSensSelect('sr_'+mode,mode)}</div>
+      <div style="display:flex;align-items:center;gap:7px;"><span class="sc-lbl">Cols</span>${buildSensSelect('sc_'+mode,mode,true)}</div>
+      <div style="display:flex;align-items:center;gap:7px;"><span class="sc-lbl">Show</span>${buildMetricSelect('sm_'+mode,mode)}</div>
+    </div>
+    <div style="overflow-x:auto;"><table class="st" id="st_${mode}"></table></div>
+  </div>`;
+}
+function buildSensSelect(id,mode,isCol){
+  const opts={flip:[['purchasePrice','Purchase Price'],['arv','ARV'],['rehabCost','Rehab Cost'],['hm_f','Hold Months'],['sc_f','Selling Costs %']],ltr:[['purchasePrice','Purchase Price'],['mr_l','Monthly Rent'],['vr_l','Vacancy %'],['interestRate','Interest Rate'],['rehabCost','Rehab Cost']],str:[['nr_s','Nightly Rate'],['occ_s','Occupancy %'],['purchasePrice','Purchase Price'],['smgmt_s','STR Mgmt %'],['interestRate','Interest Rate']],cmp:[['purchasePrice','Purchase Price'],['mr_c','LTR Rent'],['nr_c','STR Nightly Rate'],['occ_c','STR Occupancy'],['interestRate','Interest Rate']]};
+  const list=opts[mode]||opts.flip;
+  const defIdx=isCol?1:0;
+  return`<select id="${id}" onchange="buildSensTable('${mode}')">${list.map((o,i)=>`<option value="${o[0]}"${i===defIdx?' selected':''}>${o[1]}</option>`).join('')}</select>`;
+}
+function buildMetricSelect(id,mode){
+  const opts={flip:[['flipProfit','Flip Net Profit'],['flipROI','Flip Ann. ROI']],ltr:[['coc','CoC Return'],['cashflow','Monthly CF']],str:[['coc','CoC Return'],['cashflow','Monthly CF']],cmp:[['coc','LTR CoC'],['strCoc','STR CoC'],['flipProfit','Flip Profit'],['cashflow','LTR CF'],['strCF','STR CF']]};
+  const list=opts[mode]||opts.flip;
+  return`<select id="${id}" onchange="buildSensTable('${mode}')">${list.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
+}
+
+// ===== SENS TABLE =====
+function getRange(field,base){
+  if(field==='purchasePrice')return Array.from({length:5},(_,k)=>base-40000+k*20000);
+  if(field==='mr_l'||field==='mr_c')return Array.from({length:5},(_,k)=>base-200+k*100);
+  if(field==='rehabCost')return Array.from({length:5},(_,k)=>base-20000+k*10000);
+  if(field==='arv')return Array.from({length:5},(_,k)=>base-40000+k*20000);
+  if(field==='vr_l'||field==='vr_c')return[0,5,8,12,20];
+  if(field==='interestRate'||field==='sc_f')return Array.from({length:5},(_,k)=>+(base-1+k*0.5).toFixed(2));
+  if(field==='hm_f'||field==='hm_c')return[3,4,6,9,12];
+  if(field==='nr_s'||field==='nr_c')return Array.from({length:5},(_,k)=>base-40+k*20);
+  if(field==='occ_s'||field==='occ_c')return[40,50,62,70,80];
+  if(field==='smgmt_s'||field==='smgmt_c')return[15,20,25,30,35];
+  return Array.from({length:5},(_,k)=>base-2+k);
+}
+function fmtLbl(f,v){
+  if(['purchasePrice','mr_l','mr_c','rehabCost','arv','nr_s','nr_c'].includes(f))return fmt$(v);
+  if(['interestRate','vr_l','vr_c','occ_s','occ_c','smgmt_s','smgmt_c','sc_f'].includes(f))return v+'%';
+  if(f==='hm_f'||f==='hm_c')return v+'mo';
+  return v;
+}
+function sensClass(v,metric,s){
+  const t=s.targetCoC,fp=s.targetFlipProfit,cf=s.targetCashFlow;
+  if(['coc','strCoc'].includes(metric)){if(v>=t*1.3)return'cg';if(v>=t)return'cgl';if(v>=t*0.7)return'cy';if(v>=0)return'cr';return'crk';}
+  if(['cashflow','strCF'].includes(metric)){if(v>=cf*2)return'cg';if(v>=cf)return'cgl';if(v>=0)return'cy';if(v>=-300)return'cr';return'crk';}
+  if(metric==='flipProfit'){if(v>=fp*1.5)return'cg';if(v>=fp)return'cgl';if(v>=fp*0.5)return'cy';if(v>=0)return'cr';return'crk';}
+  if(metric==='flipROI'){if(v>=30)return'cg';if(v>=20)return'cgl';if(v>=12)return'cy';if(v>=0)return'cr';return'crk';}
+  return'cy';
+}
+function fmtMetric(v,metric){
+  if(['coc','strCoc','flipROI'].includes(metric))return fmtP(v);
+  if(['cashflow','strCF'].includes(metric))return fmt$(v)+'/mo';
+  return fmt$(v);
+}
+function buildSensTable(mode){
+  const s=getS();
+  const rf=document.getElementById('sr_'+mode)?.value;
+  const cf=document.getElementById('sc_'+mode)?.value;
+  const metric=document.getElementById('sm_'+mode)?.value;
+  const tbl=document.getElementById('st_'+mode);
+  if(!tbl||!rf||!cf||rf===cf)return;
+  const rowBase=gv(rf);const colBase=gv(cf);
+  const rows=getRange(rf,rowBase);const cols=getRange(cf,colBase);
+  tbl.innerHTML='';
+  const thead=document.createElement('thead');
+  const rl=rf.replace(/_[a-z]$/,'').replace(/([A-Z])/g,' $1').trim();
+  const cl2=cf.replace(/_[a-z]$/,'').replace(/([A-Z])/g,' $1').trim();
+  let hr=`<tr><th class="rh">${rl} \\ ${cl2}</th>`;
+  cols.forEach(c=>{hr+=`<th>${fmtLbl(cf,c)}</th>`;});hr+='</tr>';
+  thead.innerHTML=hr;tbl.appendChild(thead);
+  const tbody=document.createElement('tbody');
+  rows.forEach(rv=>{
+    const tr=document.createElement('tr');
+    let rh=`<td class="rl">${fmtLbl(rf,rv)}</td>`;
+    cols.forEach(cv=>{
+      const so={...s,[rf]:rv,[cf]:cv};
+      let val=0;
+      try{
+        if(metric==='flipProfit'||metric==='flipROI'){
+          const hm=gv('hm_f')||gv('hm_c')||6;const sc2=gv('sc_f')||gv('sc_c')||8;const lp=gv('lp_f')||gv('lp_c')||0;
+          const fl=cFlip(so,hm,sc2,lp);val=metric==='flipProfit'?fl.net:fl.annROI;
+        } else if(metric==='coc'||metric==='cashflow'){
+          const mr=so['mr_l']||so['mr_c']||gv('mr_l')||gv('mr_c')||1800;
+          const vr=so['vr_l']||so['vr_c']||gv('vr_l')||gv('vr_c')||8;
+          if(mode==='cmp'){const rn=cLTR_c(so,gv('mr_c'),gv('vr_c'),gv('pm_c'),gv('cxmt_c'),gv('afc_c'));const mrO=rf==='mr_c'?rv:cf==='mr_c'?cv:gv('mr_c');const vrO=rf==='vr_c'?rv:cf==='vr_c'?cv:gv('vr_c');const rn2=cLTR_c(so,mrO,vrO,gv('pm_c'),gv('cxmt_c'),gv('afc_c'));val=metric==='coc'?rn2.coc:rn2.cf;}
+          else{const mrO=rf==='mr_l'?rv:cf==='mr_l'?cv:gv('mr_l');const vrO=rf==='vr_l'?rv:cf==='vr_l'?cv:gv('vr_l');const rn=cLTR(so,mrO,vrO,gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA);val=metric==='coc'?rn.coc:rn.cf;}
+        } else if(metric==='strCoc'||metric==='strCF'){
+          const nrO=rf==='nr_s'||rf==='nr_c'?rv:cf==='nr_s'||cf==='nr_c'?cv:gv('nr_s')||gv('nr_c');
+          const occO=rf==='occ_s'||rf==='occ_c'?rv:cf==='occ_s'||cf==='occ_c'?cv:gv('occ_s')||gv('occ_c');
+          const smO=rf==='smgmt_s'||rf==='smgmt_c'?rv:cf==='smgmt_s'||cf==='smgmt_c'?cv:gv('smgmt_s')||gv('smgmt_c');
+          const str2=mode==='cmp'?cSTR_c(so,nrO,occO,smO,gv('pf_c'),gv('mop_c'),gv('safc_c')):cSTR(so,nrO,occO,gv('pf_s'),smO,gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'));
+          val=metric==='strCoc'?str2.coc:str2.monthlyCF;
+        }
+      }catch(e){val=0;}
+      const cls2=sensClass(val,metric,s);
+      const isBase=Math.abs(rv-rowBase)<0.01&&Math.abs(cv-colBase)<0.01;
+      rh+=`<td class="${cls2}${isBase?' cb':''}">${fmtMetric(val,metric)}</td>`;
+    });
+    tr.innerHTML=rh;tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+}
+
+// ===== SLIDER UPDATE =====
+function slUp(t){
+  const s=getS();
+  const v=parseFloat(document.getElementById(`sl_${t}`)?.value||0);
+  function sp(ia,ib,ta,tb,va,vb){
+    const ea=document.getElementById(ia),eb=document.getElementById(ib);
+    if(ea){ea.textContent=ta;ea.style.color=va>0?'var(--green)':va<0?'var(--red)':'var(--text-dim)';}
+    if(eb){eb.textContent=tb;eb.style.color=vb>0?'var(--green)':vb<0?'var(--red)':'var(--text-dim)';}
+  }
+  if(t==='ro'){setT('sv_ro',`+${v}%`);const m=cFlip({...s,rehabCost:s.rehabCost*(1+v/100)},gv('hm_f'),gv('sc_f'),gv('lp_f'));sp('si_ro_a','si_ro_b',fmtF(m.net),fmtP(m.annROI),m.net,m.annROI);}
+  else if(t==='am'){setT('sv_am',`-${v}%`);const m=cFlip(s,gv('hm_f'),gv('sc_f'),gv('lp_f'),s.arv*(1-v/100));sp('si_am_a','si_am_b',fmtF(m.net),fmt$(s.arv*(1-v/100)),m.net,1);}
+  else if(t==='to'){setT('sv_to',`+${v} mo`);const m=cFlip(s,gv('hm_f')+v,gv('sc_f'),gv('lp_f'));sp('si_to_a','si_to_b',fmtF(m.net),fmtP(m.annROI),m.net,m.annROI);}
+  else if(t==='va'){setT('sv_va',`${v}%`);const m=cLTR(s,gv('mr_l'),v,gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA);sp('si_va_a','si_va_b',fmtF(m.cf)+'/mo',fmtP(m.coc),m.cf,m.coc);}
+  else if(t==='ru'){setT('sv_ru',`+${v}%`);const m=cLTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,s.interestRate+v);sp('si_ru_a','si_ru_b',fmtF(m.cf)+'/mo',fmtP(m.coc),m.cf,m.coc);}
+  else if(t==='rc'){setT('sv_rc',`${v>=0?'+':''}${v}%`);const m=cLTR(s,gv('mr_l')*(1+v/100),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA);sp('si_rc_a','si_rc_b',fmtF(m.cf)+'/mo',fmtP(m.coc),m.cf,m.coc);}
+  else if(t==='oc'){setT('sv_oc',`${v}%`);const m=cSTR(s,gv('nr_s'),v,gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'));sp('si_oc_a','si_oc_b',fmtF(m.monthlyCF)+'/mo',fmtP(m.coc),m.monthlyCF,m.coc);}
+  else if(t==='nr'){setT('sv_nr',`${v>=0?'+':''}${v}%`);const m=cSTR(s,gv('nr_s')*(1+v/100),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'));sp('si_nr_a','si_nr_b',fmtF(m.monthlyCF)+'/mo',fmtP(m.coc),m.monthlyCF,m.coc);}
+  else if(t==='rus'){setT('sv_rus',`+${v}%`);const m=cSTR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'),s.interestRate+v);sp('si_rus_a','si_rus_b',fmtF(m.monthlyCF)+'/mo',fmtP(m.coc),m.monthlyCF,m.coc);}
+}
+
+// ===== TAX INSIGHT =====
+function buildTax(mode,s,fl,rn,str){
+  // Depreciation: assume 80% of purchase price is depreciable structure (20% land)
+  const depreciableBase=s.purchasePrice*0.80;
+  const annualDepr=depreciableBase/27.5;
+  const taxShield24=annualDepr*0.24; // estimate at 24% bracket
+  const taxShield32=annualDepr*0.32;
+
+  if(mode==='flip'){
+    const hm=gv('hm_f');
+    const holdMonths=gv('hm_f');
+    const isShortTerm=holdMonths<12;
+    const profit=fl?fl.net:0;
+    const stTax=profit*0.24;
+    const ltTax=profit*0.15;
+    const savings=stTax-ltTax;
+    return`<div class="tax-card">
+      <div class="tax-icon">🧾</div>
+      <div class="tax-body">
+        <div class="tax-title">Tax Insight — Flip</div>
+        ${isShortTerm
+          ?`<div class="tax-line">⚠️ Holding period is <strong>${holdMonths} months</strong> — profit taxed as <strong>ordinary income</strong>, not capital gains. At a 24% rate, a <strong>${fmtF(profit)}</strong> profit nets roughly <strong>${fmtF(profit-stTax)}</strong> after federal tax.</div>
+             <div class="tax-line">Holding just <strong>${12-holdMonths} more month${12-holdMonths===1?'':'s'}</strong> to cross the 12-month threshold could save approximately <strong>${fmtF(savings)}</strong> in federal taxes by qualifying for the 15% long-term capital gains rate.</div>`
+          :`<div class="tax-line">✅ Holding period is <strong>${holdMonths} months</strong> — profit qualifies for <strong>long-term capital gains rates</strong> (typically 15% for most investors). At 15%, a <strong>${fmtF(profit)}</strong> profit nets roughly <strong>${fmtF(profit-ltTax)}</strong> after federal tax.</div>`
+        }
+        <div class="tax-disclaimer">Estimate only. Actual tax depends on your bracket, filing status, and other income. Consult a CPA before closing.</div>
+      </div>
+    </div>`;
+  }
+
+  if(mode==='ltr'){
+    return`<div class="tax-card">
+      <div class="tax-icon">🧾</div>
+      <div class="tax-body">
+        <div class="tax-title">Tax Insight — Long-Term Rental</div>
+        <div class="tax-line">This property generates an estimated <strong>${fmtF(annualDepr)}/year in depreciation</strong> — a paper loss you can deduct against rental income even if the property is cash-flowing positively.</div>
+        <div class="tax-line">At a 24% marginal rate that's roughly <strong>${fmtF(taxShield24)}/year in tax savings</strong>. At 32%, approximately <strong>${fmtF(taxShield32)}/year</strong> — with no out-of-pocket cost.</div>
+        <div class="tax-line">If your AGI is under $100K, you may also deduct up to $25K/year in rental losses against ordinary income. This phases out between $100K–$150K AGI.</div>
+        <div class="tax-disclaimer">Based on 27.5-year straight-line depreciation on 80% of purchase price. Actual deductible amount depends on land value allocation, your AGI, and filing status. Consult a CPA.</div>
+      </div>
+    </div>`;
+  }
+
+  if(mode==='str'){
+    const avgStay=gv('sl_s');
+    const isSTRLoophole=avgStay>0&&avgStay<=7;
+    return`<div class="tax-card">
+      <div class="tax-icon">🧾</div>
+      <div class="tax-body">
+        <div class="tax-title">Tax Insight — Short-Term Rental</div>
+        <div class="tax-line">Like LTR, this property generates an estimated <strong>${fmtF(annualDepr)}/year in depreciation</strong> — worth roughly <strong>${fmtF(taxShield24)}/year in tax savings</strong> at a 24% rate.</div>
+        ${isSTRLoophole
+          ?`<div class="tax-line">✅ With an average stay of <strong>${avgStay} nights</strong>, this property may qualify as a <strong>non-passive activity</strong> — meaning losses could offset W-2 income without the $100K–$150K AGI limitation that applies to LTR. This is a significant tax advantage for high-income earners.</div>`
+          :`<div class="tax-line">Average stay of <strong>${avgStay} nights</strong> — for the STR non-passive loss treatment, average stay must be 7 nights or fewer. Consider whether shorter minimum stays are viable in this market.</div>`
+        }
+        <div class="tax-disclaimer">STR non-passive treatment requires material participation in addition to the 7-day average stay rule. Actual tax outcome depends on your specific situation. Consult a CPA.</div>
+      </div>
+    </div>`;
+  }
+
+  if(mode==='cmp'){
+    return`<div class="tax-card">
+      <div class="tax-icon">🧾</div>
+      <div class="tax-body">
+        <div class="tax-title">Tax Insight — Across All Strategies</div>
+        <div class="tax-line"><strong>Flip:</strong> ${gv('hm_c')<12?`Held under 12 months — profit taxed as ordinary income. Holding ${12-gv('hm_c')} more month${12-gv('hm_c')===1?'':'s'} qualifies for the 15% long-term capital gains rate.`:'Held 12+ months — qualifies for long-term capital gains rates (typically 15%).'}</div>
+        <div class="tax-line"><strong>LTR:</strong> Generates an estimated <strong>${fmtF(annualDepr)}/year in depreciation</strong> — roughly <strong>${fmtF(taxShield24)}/year in tax savings</strong> at 24% with no out-of-pocket cost.</div>
+        <div class="tax-line"><strong>STR:</strong> Same depreciation benefit as LTR. ${gv('sl_s')<=7||gv('occ_c')>0?'With average stays ≤7 nights, may also qualify for non-passive loss treatment — offsetting W-2 income without AGI limits.':'Increase your minimum stay requirement to explore non-passive loss treatment.'}</div>
+        <div class="tax-disclaimer">Depreciation estimate based on 27.5-year straight-line on 80% of purchase price. Tax outcomes vary by bracket, AGI, and filing status. Consult a CPA before making investment decisions.</div>
+      </div>
+    </div>`;
+  }
+  return'';
+}
+
+// ===== MAIN CALC =====
+function calc(){
+  if(!currentMode)return;
+  const s=getS();
+
+  let verdictHTML='',kmHTML='',r70HTML='',detailHTML='',taxHTML='',stressHTML='',sensHTML='';
+
+  if(currentMode==='flip'){
+    const fl=cFlip(s,gv('hm_f'),gv('sc_f'),gv('lp_f'));
+    // Update holding breakdown display
+    setT('hb-mort',s.isCash?'$0 (cash)':fmt$(fl.monthlyMortgageInterest));
+    setT('hb-tax',fmt$(fl.monthlyTax));
+    setT('hb-ins',fmt$(fl.monthlyIns));
+    setT('hb-util',fmt$(fl.monthlyUtil));
+    setT('hb-total',fmt$(fl.monthlyHolding)+'/mo');
+    // HM breakdown panel
+    if(loanType==='hardmoney'){
+      setT('hm-purch-interest',fmtF(fl.purchaseInterest));
+      setT('hm-rehab-interest',fmtF(fl.rehabDrawInterest));
+      const saved=fl.simpleModelInterest-fl.totalInterest;
+      const savEl=document.getElementById('hm-savings');
+      if(savEl){
+        savEl.textContent=`${saved>=0?'Save ':'Pay extra '}${fmtF(Math.abs(saved))}`;
+        savEl.style.color=saved>=0?'var(--emerald)':'var(--rose)';
+      }
+    }
+    verdictHTML=buildVerdict(s,fl,null,'flip');
+    kmHTML=buildKM([
+      {label:'Net Profit',val:fmtF(fl.net),cls:colorC(fl.net),sub:`${fmtP(fl.roi)} total ROI`},
+      {label:'Annualized ROI',val:fmtP(fl.annROI),cls:colorC(fl.annROI,'gld','neg'),sub:`Over ${gv('hm_f')} months`},
+      {label:'Cash Required',val:fmtF(fl.cash),cls:'gld',sub:'Down + closing + rehab'},
+      {label:'Break-Even Sale',val:fmtF(fl.be),cls:'',sub:'Min price to cover costs'},
+    ]);
+    r70HTML=build70(s,fl.rehab);
+    detailHTML=`<div class="card flip-top mb20">
+      <div class="col-hd"><div class="badge bf">Flip Analysis</div></div>
+      <div class="two-col">
+        <div>
+          ${mrow('All-In Cost',fmtF(fl.allIn),'','All-In Cost|Purchase + closing + rehab (with contingency) + holding costs + points.')}
+          ${mrow('Sale Price (ARV)',fmtF(fl.sale))}
+          ${mrow('Selling Costs',`-${fmtF(fl.sellCost)}`,'neg','Selling Costs|Agent commissions + closing costs on sale side. Typically 8–10% of sale price.')}
+          ${mrow('Total Holding Costs',`-${fmtF(fl.holding)}`,'neg')}
+        </div>
+        <div>
+          ${mrow('Cash Required',fmtF(fl.cash),'gld','Cash Required|Down payment + buying closing costs + rehab + points. What you need in the bank day one.')}
+          ${mrow('Total ROI',fmtP(fl.roi),colorC(fl.roi))}
+          ${mrow('Profit Margin',fmtP(fl.margin),colorC(fl.margin))}
+          ${mrow('Loan Points Cost',`-${fmtF(fl.pts)}`,'neg')}
+        </div>
+      </div>
+    </div>`;
+    stressHTML=`<div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Stress Test</div>
+    <div class="sl-grid">
+      ${sliderCard('ro','Rehab Overrun',0,50,5,0,'+%','What if rehab goes over budget? 20% is common.','Flip Profit','Ann. ROI')}
+      ${sliderCard('am','ARV Miss',0,20,1,0,'-%','What if it sells for less than ARV? A 10% miss on a $300K ARV = $30K gone.','Flip Profit','Adj. Sale Price')}
+      ${sliderCard('to','Time Overrun',0,6,1,0,'mo','What if the flip takes longer? Every extra month is holding costs with no income.','Flip Profit','Ann. ROI')}
+    </div>`;
+    taxHTML=buildTax('flip',s,fl,null,null);
+    sensHTML=buildSensHTML('flip',s);
+  }
+
+  else if(currentMode==='ltr'){
+    const rn=cLTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA);
+    // Update shared cost display
+    setT('ltr-tax-display',fmt$(s.propTax)+'/yr');
+    setT('ltr-ins-display',fmt$(s.propInsurance)+'/yr');
+    setT('ltr-hoa-display',s.propHOA>0?fmt$(s.propHOA)+'/yr':'$0');
+    // Compute 5-year total return for verdict logic
+    const lt5=cLT_LTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,gv('ap_l'),gv('rg_l'),5);
+    rn.lt5=lt5;
+    const fl_dummy=cFlip(s,6,8,0);
+    verdictHTML=buildVerdict(s,fl_dummy,rn,'ltr');
+    kmHTML=buildKM([
+      {label:'Monthly Cash Flow',val:fmtF(rn.cf)+'/mo',cls:colorC(rn.cf),sub:`${fmtP(rn.coc)} CoC return`},
+      {label:'5-Yr Total Return',val:fmtP(lt5.annualizedReturn),cls:colorC(lt5.annualizedReturn,'gld','neg'),sub:'Ann. return incl. equity & CF'},
+      {label:'Net Sale Proceeds (Yr 5)',val:fmt$(lt5.netSaleProceeds),cls:colorC(lt5.netSaleProceeds,'gld','neg'),sub:'After mortgage payoff & selling costs'},
+      {label:'Cash Required',val:fmtF(rn.cash),cls:'gld',sub:'Down + closing + rehab'},
+    ]);
+    r70HTML='';
+    detailHTML=`<div class="two-col mb20">
+      <div class="card ltr-top">
+        <div class="col-hd"><div class="badge bl">Cash Flow Detail</div></div>
+        ${mrow('Gross Annual Rent',fmtF(rn.gross))}
+        ${mrow('Effective Annual Rent',fmtF(rn.eff),'','Effective Annual Rent|Gross rent adjusted for vacancy. This is what you\'ll realistically collect.')}
+        ${mrow('Total Annual Expenses',`-${fmtF(rn.opex*12)}`,'neg')}
+        ${mrow('NOI',fmtF(rn.noi),'','NOI|Net Operating Income — effective rent minus all operating expenses, before debt service.')}
+        ${mrow('Cap Rate',fmtP(rn.cap),'gld','Cap Rate|NOI ÷ Purchase Price. Market comparison metric. 6–8% is typical for SFH.')}
+        ${mrow('Annual Debt Service',`-${fmtF(rn.ds)}`,'neg')}
+        ${mrow('GRM',rn.grm.toFixed(1)+'x','','GRM|Gross Rent Multiplier = Purchase Price ÷ Annual Gross Rent. Under 10x is generally favorable.')}
+        ${mrow('Break-Even Occupancy',fmtP(rn.beo),'','Break-Even Occupancy|Minimum % of the year the unit must be occupied to cover all costs including mortgage.')}
+      </div>
+      <div class="card ltr-top" style="display:flex;flex-direction:column;gap:10px;">
+        <div class="col-hd" style="margin-bottom:0;">
+          <div class="badge bl">Return on Investment</div>
+          <div style="font-size:11px;color:var(--text-dim);">Cash flow + equity + appreciation</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;">Appreciation Rate</div>
+            <div style="font-size:12px;color:var(--text-dim);">Adjust to model different markets</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input type="range" id="ap_l_slider" min="0" max="10" step="0.5" value="${gv('ap_l')}" oninput="document.getElementById('ap_l').value=this.value;calc()" style="width:100px;">
+            <div class="isfx" data-suf="%" style="width:80px;"><input type="number" id="ap_l_display" value="${gv('ap_l')}" min="0" max="15" step="0.5" oninput="document.getElementById('ap_l').value=this.value;const sl=document.getElementById('ap_l_slider');if(sl)sl.value=this.value;calc()" style="font-size:14px;font-weight:700;color:var(--gold);"></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Sell-at-Year Projections</div>
+        ${buildEquityTable(s,yr=>cLT_LTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,gv('ap_l'),gv('rg_l'),yr),'ap_l')}
+      </div>
+    </div>`;
+    stressHTML=`<div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Stress Test</div>
+    <div class="sl-grid">
+      ${sliderCard('va','Vacancy Rate',0,30,1,gv('vr_l'),'%','What if the unit sits empty more than expected?','Monthly CF','CoC Return')}
+      ${sliderCard('ru','Rate Increase',0,3,0.25,0,'+%','What if you refinance or rates move?','Monthly CF','CoC Return')}
+      ${sliderCard('rc','Rent Change',-20,20,1,0,'+%','What if market rent is higher or lower?','Monthly CF','CoC Return')}
+    </div>`;
+    taxHTML=buildTax('ltr',s,null,rn,null);
+    sensHTML=buildSensHTML('ltr',s);
+    // sync vacancy slider
+    setTimeout(()=>{const el=document.getElementById('sl_va');if(el)el.value=gv('vr_l');setT('sv_va',`${gv('vr_l')}%`);slUp('va');},50);
+  }
+
+  else if(currentMode==='str'){
+    const str=cSTR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'));
+    // Update shared cost display
+    setT('str-tax-display',fmt$(s.propTax)+'/yr');
+    setT('str-hoa-display',s.propHOA>0?fmt$(s.propHOA)+'/yr':'$0');
+    // Compute 5-year total return for verdict logic
+    const lt5s=cLT_STR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'),gv('ap_s'),5);
+    const strRn={coc:str.coc,cf:str.monthlyCF,cash:str.cash,lt5:lt5s};
+    const fl_dummy=cFlip(s,6,8,0);
+    verdictHTML=buildVerdict(s,fl_dummy,strRn,'str');
+    kmHTML=buildKM([
+      {label:'Monthly Cash Flow',val:fmtF(str.monthlyCF)+'/mo',cls:colorC(str.monthlyCF),sub:`${fmtP(str.coc)} CoC return`},
+      {label:'5-Yr Total Return',val:fmtP(lt5s.annualizedReturn),cls:colorC(lt5s.annualizedReturn,'pur','neg'),sub:'Ann. return incl. equity & CF'},
+      {label:'Net Proceeds (Yr 5)',val:fmt$(lt5s.netSaleProceeds),cls:colorC(lt5s.netSaleProceeds,'gld','neg'),sub:'After mortgage payoff & selling costs'},
+      {label:'RevPAN',val:`$${str.revpan.toFixed(2)}`,cls:'pur',sub:'Revenue per available night'},
+    ]);
+    r70HTML='';
+    detailHTML=`<div class="two-col mb20">
+      <div class="card str-top">
+        <div class="col-hd"><div class="badge bs">STR Revenue & Costs</div></div>
+        ${mrow('Gross Annual Revenue',fmtF(str.grossRev),'','Gross Annual Revenue|Nightly rate × 365 × occupancy %. Before all fees and expenses.')}
+        ${mrow('Platform Fee',`-${fmtF(str.platformFee)}`,'neg')}
+        ${mrow('STR Mgmt Fee',`-${fmtF(str.mgmtFee)}`,'neg')}
+        ${mrow('Net Revenue',fmtF(str.netRev),'gld','Net Revenue|After platform fee and management fee. Before operating expenses.')}
+        ${mrow('Annual Cleaning Costs',`-${fmtF(str.annCleaning)}`,'neg')}
+        ${mrow('Annual Fixed Costs',`-${fmtF(str.annFixed)}`,'neg')}
+        ${mrow('CapEx Reserve',`-${fmtF(str.annCapex)}`,'neg')}
+        ${mrow('NOI / Cap Rate',`${fmtF(str.noi)} / ${fmtP(str.cap)}`,'gld')}
+        ${mrow('Annual Debt Service',`-${fmtF(str.ds)}`,'neg')}
+        ${mrow('Cash Required (incl. furnishing)',fmtF(str.cash),'gld')}
+      </div>
+      <div class="card str-top" style="display:flex;flex-direction:column;gap:10px;">
+        <div class="col-hd" style="margin-bottom:0;">
+          <div class="badge bs">Return on Investment</div>
+          <div style="font-size:11px;color:var(--text-dim);">Cash flow + equity + appreciation</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;">Appreciation Rate</div>
+            <div style="font-size:12px;color:var(--text-dim);">Adjust to model different markets</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input type="range" id="ap_s_slider" min="0" max="10" step="0.5" value="${gv('ap_s')}" oninput="document.getElementById('ap_s').value=this.value;calc()" style="width:100px;">
+            <div class="isfx" data-suf="%" style="width:80px;"><input type="number" id="ap_s_display" value="${gv('ap_s')}" min="0" max="15" step="0.5" oninput="document.getElementById('ap_s').value=this.value;const sl=document.getElementById('ap_s_slider');if(sl)sl.value=this.value;calc()" style="font-size:14px;font-weight:700;color:var(--purple);"></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Sell-at-Year Projections</div>
+        ${buildEquityTable(s,yr=>cLT_STR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'),gv('ap_s'),yr),'ap_s')}
+      </div>
+    </div>`;
+    stressHTML=`<div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Stress Test</div>
+    <div class="sl-grid">
+      ${sliderCard('oc','Occupancy',20,90,1,gv('occ_s'),'%','What if bookings are lower than projected?','Monthly CF','CoC Return')}
+      ${sliderCard('nr','Nightly Rate',-30,30,5,0,'+%','What if ADR is higher or lower than estimated?','Monthly CF','CoC Return')}
+      ${sliderCard('rus','Rate Increase',0,3,0.25,0,'+%','What if your mortgage rate changes?','Monthly CF','CoC Return')}
+    </div>`;
+    taxHTML=buildTax('str',s,null,null,str);
+    sensHTML=buildSensHTML('str',s);
+    setTimeout(()=>{const el=document.getElementById('sl_oc');if(el)el.value=gv('occ_s');setT('sv_oc',`${gv('occ_s')}%`);slUp('oc');},50);
+  }
+
+  else if(currentMode==='cmp'){
+    const fl=cFlip(s,gv('hm_c'),gv('sc_c'),gv('lp_c'));
+    const ltr=cLTR_c(s,gv('mr_c'),gv('vr_c'),gv('pm_c'),gv('cxmt_c'),gv('afc_c'));
+    const str=cSTR_c(s,gv('nr_c'),gv('occ_c'),gv('smgmt_c'),gv('pf_c'),gv('mop_c'),gv('safc_c'));
+    verdictHTML=buildVerdict(s,fl,{ltr,str},'cmp');
+    // STR premium vs LTR
+    const strPremium=str.monthlyCF-ltr.cf;
+    // Winner
+    const scores={Flip:fl.annROI,LTR:ltr.coc,STR:str.coc};
+    const winner=Object.entries(scores).reduce((a,b)=>b[1]>a[1]?b:a)[0];
+    kmHTML=`<div class="cmp-summary mb20">
+      <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Strategy Comparison</div>
+      <div class="three-col">
+        <div class="${winner==='Flip'?'card flip-top winner-card':'card flip-top'}">
+          <div class="col-hd"><div class="badge bf">Flip</div>${winner==='Flip'?'<span style="font-size:10px;color:var(--gold);font-weight:600;">⭐ Best Return</span>':''}</div>
+          <div class="km-val ${colorC(fl.net)} mb8" style="font-size:22px;">${fmtF(fl.net)}</div>
+          ${mrow('Net Profit',fmtF(fl.net),colorC(fl.net))}
+          ${mrow('Ann. ROI',fmtP(fl.annROI),colorC(fl.annROI,'gld','neg'))}
+          ${mrow('Cash Required',fmtF(fl.cash),'gld')}
+          ${mrow('Break-Even Sale',fmtF(fl.be))}
+        </div>
+        <div class="${winner==='LTR'?'card ltr-top winner-card':'card ltr-top'}">
+          <div class="col-hd"><div class="badge bl">LTR</div>${winner==='LTR'?'<span style="font-size:10px;color:var(--green);font-weight:600;">⭐ Best Return</span>':''}</div>
+          <div class="km-val ${colorC(ltr.cf)} mb8" style="font-size:22px;">${fmtF(ltr.cf)}/mo</div>
+          ${mrow('Monthly CF',fmtF(ltr.cf)+'/mo',colorC(ltr.cf))}
+          ${mrow('CoC Return',fmtP(ltr.coc),colorC(ltr.coc,'gld','neg'))}
+          ${mrow('NOI / Cap Rate',`${fmtF(ltr.noi)} / ${fmtP(ltr.cap)}`,'gld')}
+          ${mrow('GRM',ltr.grm.toFixed(1)+'x')}
+        </div>
+        <div class="${winner==='STR'?'card str-top winner-card':'card str-top'}">
+          <div class="col-hd"><div class="badge bs">STR</div>${winner==='STR'?'<span style="font-size:10px;color:var(--purple);font-weight:600;">⭐ Best Return</span>':''}</div>
+          <div class="km-val ${colorC(str.monthlyCF)} mb8" style="font-size:22px;">${fmtF(str.monthlyCF)}/mo</div>
+          ${mrow('Monthly CF',fmtF(str.monthlyCF)+'/mo',colorC(str.monthlyCF))}
+          ${mrow('CoC Return',fmtP(str.coc),colorC(str.coc,'pur','neg'))}
+          ${mrow('Gross Revenue',fmtF(str.grossRev))}
+          ${mrow('STR Premium vs LTR',`${strPremium>=0?'+':''}${fmtF(strPremium)}/mo`,strPremium>=0?'pos':'neg')}
+        </div>
+      </div>
+    </div>`;
+    r70HTML=build70(s,fl.rehab);
+    // Breakeven
+    const annCF=ltr.cf*12;
+    const beYrs=annCF>0?fl.net/annCF:Infinity;
+    const lt10_l=cLT_LTR(s,gv('mr_c'),gv('vr_c'),gv('pm_c'),gv('cxmt_c')/2,gv('cxmt_c')/2,gv('afc_c')/3,gv('afc_c')/3,gv('afc_c')/3,3,2,10);
+    const flip10=fl.net>0?fl.net*Math.pow(1.08,10):fl.net;
+    detailHTML=`<div class="be-box mb20">
+      <div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">⚖️ Flip vs. Hold — The Real Question</div>
+      <div class="three-col">
+        <div>
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">Flip puts <strong style="color:var(--text)">${fmtF(fl.net)}</strong> in your pocket now.</div>
+          <div style="font-size:12px;color:var(--text-dim);">LTR returns <strong style="color:var(--text)">${fmtF(annCF)}/yr</strong> in cash flow.</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:6px;">STR returns <strong style="color:var(--text)">${fmtF(str.annCF)}/yr</strong> in cash flow.</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;">LTR break-even vs flip</div>
+          <div class="be-yr">${annCF>0&&fl.net>0?beYrs.toFixed(1)+' yrs':annCF<=0?'∞':'Now'}</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">Years of LTR income to match flip payout</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">10-Year Returns</div>
+          ${mrow('Flip (reinvested @8%)',fmt$(flip10),'gld')}
+          ${mrow('LTR (CF + equity)',fmt$(lt10_l.eq+lt10_l.cf),colorC(lt10_l.eq+lt10_l.cf))}
+          ${mrow('STR (est. CF + equity)',fmt$(lt10_l.eq+str.annCF*10),colorC(lt10_l.eq+str.annCF*10,'pur','neg'))}
+        </div>
+      </div>
+    </div>`;
+    stressHTML='';taxHTML=buildTax('cmp',s,fl,null,str);sensHTML=buildSensHTML('cmp',s);
+  }
+
+  else if(currentMode==='mfh'){
+    const totalUnits=gv('mfh_units')||4;
+    const avgRent=gv('mfh_rent')||1200;
+    const mfh=cMFH(s,totalUnits,avgRent,gv('mfh_vr'),gv('mfh_pm'),gv('mfh_cx'),gv('mfh_mt'),gv('mfh_cu'),s.propTax,s.propInsurance,s.propHOA);
+    const lt5m=cLT_MFH(s,totalUnits,avgRent,gv('mfh_vr'),gv('mfh_pm'),gv('mfh_cx'),gv('mfh_mt'),gv('mfh_cu'),gv('mfh_ap'),gv('mfh_rg'),5);
+    // Update displays
+    setT('mfh-tax-display',fmt$(s.propTax)+'/yr');
+    setT('mfh-ins-display',fmt$(s.propInsurance)+'/yr');
+    setT('mfh-hoa-display',s.propHOA>0?fmt$(s.propHOA)+'/yr':'$0');
+    setT('mfh-gross-display',fmtF(totalUnits*avgRent)+'/mo');
+    const mfhRn={coc:mfh.coc,cf:mfh.cf,cash:mfh.cash,lt5:lt5m};
+    verdictHTML=buildVerdict(s,cFlip(s,6,8,0),mfhRn,'ltr');
+    kmHTML=buildKM([
+      {label:'Monthly Cash Flow',val:fmtF(mfh.cf)+'/mo',cls:colorC(mfh.cf),sub:`Across all ${mfh.totalUnits} units`},
+      {label:'Cash-on-Cash',val:fmtP(mfh.coc),cls:colorC(mfh.coc,'gld','neg'),sub:`Target: ${fmtP(s.targetCoC)}`},
+      {label:'5-Yr Total Return',val:fmtP(lt5m.annualizedReturn),cls:colorC(lt5m.annualizedReturn,'gld','neg'),sub:'Ann. return incl. equity & CF'},
+      {label:'Cap Rate',val:fmtP(mfh.cap),cls:'gld',sub:'NOI ÷ Purchase Price'},
+    ]);
+    r70HTML='';
+    const annualDepr=s.purchasePrice*0.80/27.5;
+    const taxShield=annualDepr*0.24;
+    taxHTML=`<div class="tax-card">
+      <div class="tax-icon">🧾</div>
+      <div class="tax-body">
+        <div class="tax-title">Tax Insight — Multi-Family</div>
+        <div class="tax-line">Estimated <strong>${fmtF(annualDepr)}/year in depreciation</strong> — worth roughly <strong>${fmtF(taxShield)}/year in tax savings</strong> at a 24% rate.</div>
+        <div class="tax-line">Multi-family investors also use <strong>cost segregation</strong> to accelerate depreciation — an engineer reclassifies components like appliances, flooring, and fixtures as 5–7 year property. On a ${fmt$(s.purchasePrice)} building this can produce <strong>$${Math.round(s.purchasePrice*0.15/1000)}K–$${Math.round(s.purchasePrice*0.25/1000)}K in first-year bonus depreciation</strong>. Particularly powerful at your scale.</div>
+        <div class="tax-disclaimer">Consult a CPA who specializes in real estate. Cost segregation typically costs $3–10K but can generate far larger tax benefits.</div>
+      </div>
+    </div>`;
+    detailHTML=`<div class="two-col mb20">
+      <div class="card ltr-top">
+        <div class="col-hd"><div class="badge bl">Cash Flow Detail</div></div>
+        ${mrow('Gross Annual Rent',fmtF(mfh.grossRent))}
+        ${mrow('Effective Annual Rent',fmtF(mfh.eff),'','Effective Annual Rent|Gross rent adjusted for vacancy across all units.')}
+        ${mrow('Total Annual Expenses',`-${fmtF(mfh.opex*12)}`,'neg')}
+        ${mrow('NOI',fmtF(mfh.noi),'gld','NOI|Net Operating Income — income minus all operating expenses before debt service. The key metric for multi-family valuation.')}
+        ${mrow('Cap Rate',fmtP(mfh.cap),'gld','Cap Rate|NOI ÷ Purchase Price. For multi-family, cap rate drives property valuation — a 1% improvement in cap rate can significantly increase what a buyer will pay.')}
+        ${mrow('Annual Debt Service',`-${fmtF(mfh.ds)}`,'neg')}
+        ${mrow('GRM',mfh.grm.toFixed(1)+'x','','GRM|Gross Rent Multiplier = Purchase Price ÷ Annual Gross Rent.')}
+        ${mrow('Break-Even Occupancy',fmtP(mfh.beo),'','Break-Even Occupancy|Minimum average occupancy across all units to cover all costs including mortgage.')}
+        ${mrow('Cash Flow Per Unit',fmtF(mfh.perUnitCF)+'/mo',colorC(mfh.perUnitCF),'Per-Unit CF|Average monthly cash flow per individual unit. Quick sanity check — experienced investors often target $100–300/door.')}
+      </div>
+      <div class="card ltr-top" style="display:flex;flex-direction:column;gap:10px;">
+        <div class="col-hd" style="margin-bottom:0;">
+          <div class="badge bl">Return on Investment</div>
+          <div style="font-size:11px;color:var(--text-dim);">Cash flow + equity + appreciation</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);">
+          <div>
+            <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;">Appreciation Rate</div>
+            <div style="font-size:12px;color:var(--text-dim);">Adjust to model different markets</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input type="range" id="mfh_ap_slider" min="0" max="10" step="0.5" value="${gv('mfh_ap')}" oninput="document.getElementById('mfh_ap').value=this.value;calc()" style="width:100px;">
+            <div class="isfx" data-suf="%" style="width:80px;"><input type="number" id="mfh_ap_disp" value="${gv('mfh_ap')}" min="0" max="15" step="0.5" oninput="document.getElementById('mfh_ap').value=this.value;const sl=document.getElementById('mfh_ap_slider');if(sl)sl.value=this.value;calc()" style="font-size:14px;font-weight:700;color:var(--emerald);"></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Sell-at-Year Projections</div>
+        ${buildEquityTable(s,yr=>cLT_MFH(s,gv('mfh_units')||4,gv('mfh_rent')||1200,gv('mfh_vr'),gv('mfh_pm'),gv('mfh_cx'),gv('mfh_mt'),gv('mfh_cu'),gv('mfh_ap'),gv('mfh_rg'),yr),'mfh_ap')}
+      </div>
+    </div>`;
+    stressHTML='';sensHTML='';
+  }
+
+  // Inject HTML
+  document.getElementById('verdict-wrap').innerHTML=verdictHTML;
+  document.getElementById('key-metrics-wrap').innerHTML=kmHTML;
+  document.getElementById('r70-wrap').innerHTML=r70HTML;
+  document.getElementById('detail-wrap').innerHTML=detailHTML;
+  document.getElementById('tax-wrap').innerHTML=taxHTML;
+  document.getElementById('stress-wrap').innerHTML=stressHTML;
+  document.getElementById('sens-wrap').innerHTML=sensHTML;
+
+  // Build sens table after DOM update
+  setTimeout(()=>{
+    const m=currentMode==='flip'?'flip':currentMode==='ltr'?'ltr':currentMode==='str'?'str':currentMode==='mfh'?null:'cmp';
+    if(m)buildSensTable(m);
+  },10);
+}
+
+// Init
+updateFinSummary();
+updateThreshSummary();
+</script>
+
+<!-- BRIAN FOOTER BAR -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c1c 0%,#2a2a2a 100%);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f5c518,#e0a800);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:800;color:#1a1a2e;flex-shrink:0;">BP</div>
+    <div>
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:#fff;">Brian Polodna</div>
+      <div style="font-size:10px;color:rgba(245,197,24,0.8);letter-spacing:0.5px;">Realtor · KS &amp; MO · The George Medina Team</div>
+    </div>
+    <div style="width:1px;height:28px;background:rgba(255,255,255,0.12);margin:0 8px;"></div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.5);">2024 Kansas City Rising Star &nbsp;·&nbsp; Top 40 Under 40 &nbsp;·&nbsp; Rookie of the Year</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="tel:8163484511" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:#f5c518;text-decoration:none;">(816) 348-4511</a>
+    <a href="https://brianpolodna.reecenichols.com/" target="_blank" style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:#1a1a2e;background:#f5c518;padding:7px 16px;border-radius:20px;text-decoration:none;white-space:nowrap;">View My Listings →</a>
+  </div>
+</div>
+<!-- padding so footer doesn't cover content -->
+<div style="height:68px;"></div>
+</body>
+</html>
