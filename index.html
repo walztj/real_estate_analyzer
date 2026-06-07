@@ -941,8 +941,12 @@ const agentConfig={
 function loadAgentConfig(){
   const slug=window.location.pathname.split('/').filter(Boolean).pop();
   const cfg=agentConfig[slug];if(!cfg)return;
+  // Replace main sticky header brand
   const hdr=document.getElementById('hdr-brand');
   if(hdr){hdr.innerHTML='<div style="width:36px;height:36px;background:#f5c518;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;overflow:hidden;"><rect width="40" height="40" fill="#F5C518"/><text x="-4" y="38" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white">&amp;</text></svg></div><div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.1;">'+cfg.name+'</div><div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div></div><div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Property Analyzer</div>';}
+  // Replace entry screen header with agent brand
+  const entryHdr=document.querySelector('#entry-overlay header');
+  if(entryHdr){entryHdr.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)';entryHdr.innerHTML='<div style="display:flex;align-items:center;gap:10px;z-index:1;"><div style="width:36px;height:36px;background:#f5c518;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;overflow:hidden;"><rect width="40" height="40" fill="#F5C518"/><text x="-4" y="38" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white">&amp;</text></svg></div><div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.1;">'+cfg.name+'</div><div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div></div><div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Property Analyzer</div></div><div style="z-index:1;"></div>';}
   document.querySelectorAll('header').forEach(h=>h.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)');
   const footer=document.getElementById('agent-footer');if(footer)footer.style.display='flex';
   const spacer=document.getElementById('ftr-spacer');if(spacer)spacer.style.display='block';
@@ -951,6 +955,8 @@ function loadAgentConfig(){
   const ph=document.getElementById('af-phone');if(ph){ph.textContent=cfg.phone;ph.href=cfg.phoneHref;}
   const cta=document.getElementById('af-cta');if(cta){cta.textContent=cfg.ctaLabel;cta.href=cfg.ctaUrl;}
   const ep=document.getElementById('entry-powered');if(ep)ep.innerHTML='Provided by <strong>'+cfg.name+'</strong> &nbsp;&#183;&nbsp; '+cfg.phone+' &nbsp;&#183;&nbsp; Powered by Real Estate Analysis';
+  // Hide REA hero logo on entry screen when agent is present
+  const heroImg=document.querySelector('.entry-inner img');if(heroImg)heroImg.style.display='none';
 }
 
 // ===== PATH =====
