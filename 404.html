@@ -269,6 +269,7 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
 .cc-t td{padding:8px 4px;font-size:13px;}
 .cc-t td:last-child{text-align:right;font-family:'JetBrains Mono',monospace;}
 #agent-footer{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);}
+#agent-footer[data-agent="1"]{display:flex;}
 @media(max-width:900px){.entry-cards{grid-template-columns:1fr;}.home-wrap{padding:20px 16px 80px;}.dp-grid,.key-metrics{grid-template-columns:repeat(2,1fr);}.two-col,.three-col{grid-template-columns:1fr;}.g4,.g5{grid-template-columns:repeat(2,1fr);}.path-bar{padding:0 16px;}}
 @media print{header{position:relative;}.path-bar{position:relative;}#agent-footer{display:none !important;}.btn-pdf{display:none;}}
 </style>
@@ -979,10 +980,7 @@ function setAppPath(p){
   document.getElementById('tab-invest').className='path-tab'+(p==='invest'?' ai':'');
   setT('hdr-tag',p==='home'?'Primary Residence':'Investment Analysis');
   const ht=document.getElementById('hdr-tag');if(ht)ht.style.display='';
-  // Re-assert footer visibility (loadAgentConfig may have set it but CSS can interfere)
-  const footer=document.getElementById('agent-footer');
-  const spacer=document.getElementById('ftr-spacer');
-  if(footer&&footer.getAttribute('data-agent')==='1'){footer.style.display='flex';if(spacer)spacer.style.display='block';}
+  // Footer visibility handled by CSS [data-agent="1"] selector
   if(p==='home'){updateDpButtons();calcHome();}
   if(p==='invest'){if(typeof initInvestorTool==='function'){initInvestorTool();}try{setPropType(window.propType||'sfh');}catch(e){}}
   window.scrollTo({top:0,behavior:'smooth'});
