@@ -948,7 +948,7 @@ function loadAgentConfig(){
   const entryHdr=document.querySelector('#entry-overlay header');
   if(entryHdr){entryHdr.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)';entryHdr.innerHTML='<div style="display:flex;align-items:center;gap:10px;z-index:1;"><div style="width:36px;height:36px;background:#f5c518;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;overflow:hidden;"><rect width="40" height="40" fill="#F5C518"/><text x="-4" y="38" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white">&amp;</text></svg></div><div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.1;">'+cfg.name+'</div><div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div></div><div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Property Analyzer</div></div><div style="z-index:1;"></div>';}
   document.querySelectorAll('header').forEach(h=>h.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)');
-  const footer=document.getElementById('agent-footer');if(footer)footer.style.display='flex';
+  const footer=document.getElementById('agent-footer');if(footer){footer.style.display='flex';footer.setAttribute('data-agent','1');}
   const spacer=document.getElementById('ftr-spacer');if(spacer)spacer.style.display='block';
   setT('af-name',cfg.name);setT('af-sub',cfg.title+' - '+cfg.team);setT('af-awards',cfg.awards);
   const ini=cfg.name.split(' ').map(n=>n[0]).join('');setT('af-avatar',ini);
@@ -979,6 +979,10 @@ function setAppPath(p){
   document.getElementById('tab-invest').className='path-tab'+(p==='invest'?' ai':'');
   setT('hdr-tag',p==='home'?'Primary Residence':'Investment Analysis');
   const ht=document.getElementById('hdr-tag');if(ht)ht.style.display='';
+  // Re-assert footer visibility (loadAgentConfig may have set it but CSS can interfere)
+  const footer=document.getElementById('agent-footer');
+  const spacer=document.getElementById('ftr-spacer');
+  if(footer&&footer.getAttribute('data-agent')==='1'){footer.style.display='flex';if(spacer)spacer.style.display='block';}
   if(p==='home'){updateDpButtons();calcHome();}
   if(p==='invest'){if(typeof initInvestorTool==='function'){initInvestorTool();}try{setPropType(window.propType||'sfh');}catch(e){}}
   window.scrollTo({top:0,behavior:'smooth'});
