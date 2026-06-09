@@ -272,6 +272,7 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
 #agent-footer[data-agent="1"]{display:flex;}
 @media(max-width:900px){.entry-cards{grid-template-columns:1fr;}.home-wrap{padding:20px 16px 80px;}.dp-grid,.key-metrics{grid-template-columns:repeat(2,1fr);}.two-col,.three-col{grid-template-columns:1fr;}.g4,.g5{grid-template-columns:repeat(2,1fr);}.path-bar{padding:0 16px;}}
 @media print{header{position:relative;}.path-bar{position:relative;}#agent-footer{display:none !important;}.btn-pdf{display:none;}}
+@media screen{#agent-footer[data-agent="1"]{display:flex !important;}}
 </style>
 </head>
 <body>
@@ -1491,34 +1492,43 @@ function buildEquityTable(s,ltFn,apId){
   const years=[1,2,3,5,7,10];
   const rows=years.map(yr=>{
     const lt=ltFn(yr);
-    const cfColor=lt.cf>=0?'var(--green)':'var(--red)';
-    const trColor=lt.annualizedReturn>=s.targetCoC?'var(--green)':lt.annualizedReturn>0?'var(--gold)':'var(--red)';
-    return`<tr>
-      <td style="font-weight:600;color:var(--text);font-size:12px;">Year ${yr}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:12px;">${fmt$(lt.pv)}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);">${fmt$(lt.eq)}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:12px;color:${cfColor};">${fmt$(lt.cf)}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);">${fmt$(lt.netSaleProceeds)}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:12px;color:${trColor};font-weight:600;">${fmtP(lt.annualizedReturn)}</td>
+    const cfColor=lt.cf>=0?'var(--emerald)':'var(--red)';
+    const trColor=lt.annualizedReturn>=s.targetCoC?'var(--emerald)':lt.annualizedReturn>0?'var(--gold)':'var(--red)';
+    return`<tr style="border-bottom:1px solid var(--border-soft);">
+      <td style="padding:10px 14px;font-weight:700;color:var(--text);font-size:12px;">Yr ${yr}</td>
+      <td style="padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);">${fmt$(lt.pv)}</td>
+      <td style="padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--emerald);font-weight:600;">${fmt$(lt.eq)}</td>
+      <td style="padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:${cfColor};">${fmt$(lt.cf)}</td>
+      <td style="padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);">${fmt$(lt.netSaleProceeds)}</td>
+      <td style="padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:${trColor};font-weight:700;">${fmtP(lt.annualizedReturn)}</td>
     </tr>`;
   });
-  return`<div style="overflow-x:auto;">
-    <table style="width:100%;border-collapse:collapse;font-size:12px;">
-      <thead>
-        <tr style="background:#eeeae2;">
-          <th style="text-align:left;padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);">Year</th>
-          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Property Value</span>Estimated value at this year based on your appreciation rate assumption.</span></span> Prop Value</th>
-          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--green);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Equity</span>Property value minus remaining mortgage balance. What you own outright at this point.</span></span> Equity</th>
-          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Cumulative Cash Flow</span>Total net cash flow collected across all years to this point. Can be negative.</span></span> Cum. CF</th>
-          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Net Sale Proceeds</span>What you'd walk away with if you sold this year — after paying off the mortgage and selling costs (~8%). This is your cash-out windfall.</span></span> Net Proceeds</th>
-          <th style="padding:8px 10px;font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);border:1px solid rgba(26,46,69,0.1);"><span class="tt">?<span class="tb"><span class="tn">Annualized Total Return</span>Your annualized return if you sold in this year — cumulative cash flow plus net sale proceeds divided by initial cash invested. The full picture.</span></span> Ann. Total Return</th>
-        </tr>
-      </thead>
-      <tbody style="font-family:'DM Mono',monospace;">
-        ${rows.join('')}
-      </tbody>
-    </table>
-    <div style="font-size:10px;color:var(--text-faint);margin-top:6px;font-style:italic;">Net proceeds assume 8% selling costs. Appreciation at ${fmtP(apRate)} annually. Total return = (cum. CF + net proceeds) ÷ cash invested, annualized.</div>
+  const colHd=(label,color='var(--text-faint)',tt='')=>`<th style="padding:8px 14px;text-align:left;font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:${color};white-space:nowrap;">${tt?`<span class="tt">?<span class="tb"><span class="tn">${tt.split('|')[0]}</span>${tt.split('|')[1]||''}</span></span> `:''}${label}</th>`;
+  return`<div style="background:#fff;border:1.5px solid var(--border-soft);border-radius:var(--radius);overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border-soft);background:var(--bg-card);">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);">If You Sell At Year…</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:var(--text-dim);">Appreciation</span>
+        <input type="range" id="${apId}_slider" min="0" max="10" step="0.5" value="${apRate}" oninput="document.getElementById('${apId}').value=this.value;const d=document.getElementById('${apId}_display');if(d)d.value=this.value;calc()" style="width:80px;accent-color:var(--violet);">
+        <div class="isfx" data-suf="%" style="width:64px;"><input type="number" id="${apId}_display" value="${apRate}" min="0" max="15" step="0.5" oninput="document.getElementById('${apId}').value=this.value;const sl=document.getElementById('${apId}_slider');if(sl)sl.value=this.value;calc()" style="font-size:13px;font-weight:700;color:var(--violet);"></div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:var(--bg);">
+            ${colHd('Year')}
+            ${colHd('Prop Value','var(--text-faint)','Property Value|Estimated value at this year based on your appreciation rate.')}
+            ${colHd('Equity','var(--emerald)','Equity|Property value minus remaining mortgage balance.')}
+            ${colHd('Cum. CF','var(--text-faint)','Cumulative Cash Flow|Total net cash flow collected to this point.')}
+            ${colHd('Net Proceeds','var(--gold)','Net Proceeds|Walk-away cash after paying off mortgage and selling costs (~8%).')}
+            ${colHd('Ann. Return','var(--violet)','Annualized Total Return|Your annualized return if you sold this year — full picture including equity and cash flow.')}
+          </tr>
+        </thead>
+        <tbody>${rows.join('')}</tbody>
+      </table>
+    </div>
+    <div style="padding:8px 14px;font-size:10px;color:var(--text-faint);font-style:italic;border-top:1px solid var(--border-soft);">Net proceeds assume 8% selling costs. Appreciation at ${fmtP(apRate)} annually.</div>
   </div>`;
 }
 
@@ -1811,7 +1821,7 @@ function calc(){
       {label:'Cash Required',val:fmtF(rn.cash),cls:'gld',sub:'Down + closing + rehab'},
     ]);
     r70HTML='';
-    detailHTML=`<div class="two-col mb20">
+    detailHTML=`<div class="two-col mb16">
       <div class="card ltr-top">
         <div class="col-hd"><div class="badge bl">Cash Flow Detail</div></div>
         ${mrow('Gross Annual Rent',fmtF(rn.gross))}
@@ -1823,25 +1833,17 @@ function calc(){
         ${mrow('GRM',rn.grm.toFixed(1)+'x','','GRM|Gross Rent Multiplier = Purchase Price ÷ Annual Gross Rent. Under 10x is generally favorable.')}
         ${mrow('Break-Even Occupancy',fmtP(rn.beo),'','Break-Even Occupancy|Minimum % of the year the unit must be occupied to cover all costs including mortgage.')}
       </div>
-      <div class="card ltr-top" style="display:flex;flex-direction:column;gap:10px;">
-        <div class="col-hd" style="margin-bottom:0;">
-          <div class="badge bl">Return on Investment</div>
-          <div style="font-size:11px;color:var(--text-dim);">Cash flow + equity + appreciation</div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-          <div>
-            <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;">Appreciation Rate</div>
-            <div style="font-size:12px;color:var(--text-dim);">Adjust to model different markets</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <input type="range" id="ap_l_slider" min="0" max="10" step="0.5" value="${gv('ap_l')}" oninput="document.getElementById('ap_l').value=this.value;calc()" style="width:100px;">
-            <div class="isfx" data-suf="%" style="width:80px;"><input type="number" id="ap_l_display" value="${gv('ap_l')}" min="0" max="15" step="0.5" oninput="document.getElementById('ap_l').value=this.value;const sl=document.getElementById('ap_l_slider');if(sl)sl.value=this.value;calc()" style="font-size:14px;font-weight:700;color:var(--gold);"></div>
-          </div>
-        </div>
-        <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Sell-at-Year Projections</div>
-        ${buildEquityTable(s,yr=>cLT_LTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,gv('ap_l'),gv('rg_l'),yr),'ap_l')}
+      <div class="card ltr-top">
+        <div class="col-hd"><div class="badge bl">Return Snapshot</div></div>
+        ${mrow('Monthly Cash Flow',fmtF(rn.monthlyCF)+'/mo',colorC(rn.monthlyCF))}
+        ${mrow('CoC Return',fmtP(rn.coc),'gld','CoC Return|Cash-on-Cash Return = annual cash flow ÷ total cash invested.')}
+        ${mrow('Cash Required',fmtF(rn.cash),'','Cash Required|Down payment + closing costs + rehab. Total out-of-pocket.')}
+        ${mrow('Annual Cash Flow',fmtF(rn.monthlyCF*12),colorC(rn.monthlyCF))}
+        ${mrow('5-Yr Net Proceeds',fmtF(cLT_LTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,gv('ap_l'),gv('rg_l'),5).netSaleProceeds),'gld')}
+        ${mrow('5-Yr Ann. Return',fmtP(cLT_LTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,gv('ap_l'),gv('rg_l'),5).annualizedReturn),'pur')}
       </div>
-    </div>`;
+    </div>
+    <div class="mb20">${buildEquityTable(s,yr=>cLT_LTR(s,gv('mr_l'),gv('vr_l'),gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA,gv('ap_l'),gv('rg_l'),yr),'ap_l')}</div>`;
     stressHTML=`<div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Stress Test</div>
     <div class="sl-grid">
       ${sliderCard('va','Vacancy Rate',0,30,1,gv('vr_l'),'%','What if the unit sits empty more than expected?','Monthly CF','CoC Return')}
@@ -1871,7 +1873,7 @@ function calc(){
       {label:'RevPAN',val:`$${str.revpan.toFixed(2)}`,cls:'pur',sub:'Revenue per available night'},
     ]);
     r70HTML='';
-    detailHTML=`<div class="two-col mb20">
+    detailHTML=`<div class="two-col mb16">
       <div class="card str-top">
         <div class="col-hd"><div class="badge bs">STR Revenue & Costs</div></div>
         ${mrow('Gross Annual Revenue',fmtF(str.grossRev),'','Gross Annual Revenue|Nightly rate × 365 × occupancy %. Before all fees and expenses.')}
@@ -1885,25 +1887,17 @@ function calc(){
         ${mrow('Annual Debt Service',`-${fmtF(str.ds)}`,'neg')}
         ${mrow('Cash Required (incl. furnishing)',fmtF(str.cash),'gld')}
       </div>
-      <div class="card str-top" style="display:flex;flex-direction:column;gap:10px;">
-        <div class="col-hd" style="margin-bottom:0;">
-          <div class="badge bs">Return on Investment</div>
-          <div style="font-size:11px;color:var(--text-dim);">Cash flow + equity + appreciation</div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-          <div>
-            <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;">Appreciation Rate</div>
-            <div style="font-size:12px;color:var(--text-dim);">Adjust to model different markets</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <input type="range" id="ap_s_slider" min="0" max="10" step="0.5" value="${gv('ap_s')}" oninput="document.getElementById('ap_s').value=this.value;calc()" style="width:100px;">
-            <div class="isfx" data-suf="%" style="width:80px;"><input type="number" id="ap_s_display" value="${gv('ap_s')}" min="0" max="15" step="0.5" oninput="document.getElementById('ap_s').value=this.value;const sl=document.getElementById('ap_s_slider');if(sl)sl.value=this.value;calc()" style="font-size:14px;font-weight:700;color:var(--purple);"></div>
-          </div>
-        </div>
-        <div style="font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Sell-at-Year Projections</div>
-        ${buildEquityTable(s,yr=>cLT_STR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'),gv('ap_s'),yr),'ap_s')}
+      <div class="card str-top">
+        <div class="col-hd"><div class="badge bs">Return Snapshot</div></div>
+        ${mrow('Monthly Cash Flow',fmtF(str.monthlyCF)+'/mo',colorC(str.monthlyCF))}
+        ${mrow('CoC Return',fmtP(str.coc),'gld')}
+        ${mrow('RevPAN',`$${str.revpan.toFixed(2)}`,'' ,'RevPAN|Revenue per available night — key STR performance metric.')}
+        ${mrow('Cash Required',fmtF(str.cash),'gld')}
+        ${mrow('5-Yr Net Proceeds',fmtF(cLT_STR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'),gv('ap_s'),5).netSaleProceeds),'gld')}
+        ${mrow('5-Yr Ann. Return',fmtP(lt5s.annualizedReturn),'pur')}
       </div>
-    </div>`;
+    </div>
+    <div class="mb20">${buildEquityTable(s,yr=>cLT_STR(s,gv('nr_s'),gv('occ_s'),gv('pf_s'),gv('smgmt_s'),gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'),gv('ap_s'),yr),'ap_s')}</div>`;
     stressHTML=`<div style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Stress Test</div>
     <div class="sl-grid">
       ${sliderCard('oc','Occupancy',20,90,1,gv('occ_s'),'%','What if bookings are lower than projected?','Monthly CF','CoC Return')}
