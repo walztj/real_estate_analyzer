@@ -268,11 +268,11 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
 .cc-t tr:last-child{border-bottom:none;font-weight:700;}
 .cc-t td{padding:8px 4px;font-size:13px;}
 .cc-t td:last-child{text-align:right;font-family:'JetBrains Mono',monospace;}
-#agent-footer{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);}
-#agent-footer[data-agent="1"]{display:flex;}
+#agent-footer{display:flex;visibility:hidden;position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);}
+#agent-footer[data-agent="1"]{visibility:visible;}
 @media(max-width:900px){.entry-cards{grid-template-columns:1fr;}.home-wrap{padding:20px 16px 80px;}.dp-grid,.key-metrics{grid-template-columns:repeat(2,1fr);}.two-col,.three-col{grid-template-columns:1fr;}.g4,.g5{grid-template-columns:repeat(2,1fr);}.path-bar{padding:0 16px;}}
-@media print{header{position:relative;}.path-bar{position:relative;}#agent-footer{display:none !important;}.btn-pdf{display:none;}}
-@media screen{#agent-footer[data-agent="1"]{display:flex !important;}}
+@media print{header{position:relative;}.path-bar{position:relative;}#agent-footer{visibility:hidden !important;}.btn-pdf{display:none;}}
+@media screen{#agent-footer[data-agent="1"]{visibility:visible !important;}}
 </style>
 </head>
 <body>
@@ -284,6 +284,8 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
   </div>
   <div class="hdr-r" style="z-index:1;">
     <div class="hdr-tag" id="hdr-tag" style="display:none;">Real Estate</div>
+    <a id="hdr-phone" href="#" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:#f5c518;text-decoration:none;letter-spacing:0.3px;"></a>
+    <a id="hdr-cta" href="#" target="_blank" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;color:#1a1a2e;background:#f5c518;padding:7px 16px;border-radius:20px;text-decoration:none;white-space:nowrap;"></a>
     <button class="btn-pdf" onclick="window.print()">&#128438; Export PDF</button>
   </div>
 </header>
@@ -910,7 +912,7 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
 
 
 <!-- AGENT FOOTER -->
-<div id="agent-footer">
+<div id="agent-footer" style="visibility:hidden;">
   <div style="display:flex;align-items:center;gap:14px;">
     <div id="af-avatar" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f5c518,#e0a800);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#1a1a2e;flex-shrink:0;">-</div>
     <div><div id="af-name" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:#fff;">-</div><div id="af-sub" style="font-size:10px;color:rgba(245,197,24,0.8);">-</div></div>
@@ -952,12 +954,15 @@ function loadAgentConfig(){
   if(entryHdr){entryHdr.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)';entryHdr.innerHTML='<div style="display:flex;align-items:center;gap:10px;z-index:1;"><div style="width:36px;height:36px;background:#f5c518;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;overflow:hidden;"><rect width="40" height="40" fill="#F5C518"/><text x="-4" y="38" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white">&amp;</text></svg></div><div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.1;">'+cfg.name+'</div><div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div></div><div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Property Analyzer</div></div><div style="z-index:1;"></div>';}
   document.querySelectorAll('header').forEach(h=>h.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)');
   const footer=document.getElementById('agent-footer');
-  if(footer){footer.style.cssText='display:flex !important;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);';footer.setAttribute('data-agent','1');}
-  const spacer=document.getElementById('ftr-spacer');if(spacer)spacer.style.cssText='display:block !important;height:68px;';
+  if(footer){footer.style.visibility='visible';footer.setAttribute('data-agent','1');}
+  const spacer=document.getElementById('ftr-spacer');if(spacer)spacer.style.display='block';
   setT('af-name',cfg.name);setT('af-sub',cfg.title+' - '+cfg.team);setT('af-awards',cfg.awards);
   const ini=cfg.name.split(' ').map(n=>n[0]).join('');setT('af-avatar',ini);
   const ph=document.getElementById('af-phone');if(ph){ph.textContent=cfg.phone;ph.href=cfg.phoneHref;}
   const cta=document.getElementById('af-cta');if(cta){cta.textContent=cfg.ctaLabel;cta.href=cfg.ctaUrl;}
+  // Header phone + CTA
+  const hdrPh=document.getElementById('hdr-phone');if(hdrPh){hdrPh.textContent=cfg.phone;hdrPh.href=cfg.phoneHref;hdrPh.style.display='inline';}
+  const hdrCta=document.getElementById('hdr-cta');if(hdrCta){hdrCta.textContent=cfg.ctaLabel;hdrCta.href=cfg.ctaUrl;hdrCta.style.display='inline';}
   const ep=document.getElementById('entry-powered');if(ep)ep.innerHTML='Provided by <strong>'+cfg.name+'</strong> &nbsp;&#183;&nbsp; '+cfg.phone+' &nbsp;&#183;&nbsp; Powered by Real Estate Analysis';
 }
 
