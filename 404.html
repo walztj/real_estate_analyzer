@@ -988,7 +988,13 @@ function setAppPath(p){
   document.getElementById('tab-invest').className='path-tab'+(p==='invest'?' ai':'');
   setT('hdr-tag',p==='home'?'Primary Residence':'Investment Analysis');
   const ht=document.getElementById('hdr-tag');if(ht)ht.style.display='';
-  // Footer visibility handled by CSS [data-agent="1"] selector
+  // Force footer visible on every path change
+  const ftr=document.getElementById('agent-footer');
+  if(ftr&&ftr.getAttribute('data-agent')==='1'){
+    ftr.style.cssText='display:flex !important;position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);';
+    console.log('Footer forced visible in setAppPath');
+  }
+  const sp=document.getElementById('ftr-spacer');if(sp&&ftr&&ftr.getAttribute('data-agent')==='1')sp.style.display='block';
   if(p==='home'){updateDpButtons();calcHome();}
   if(p==='invest'){if(typeof initInvestorTool==='function'){initInvestorTool();}try{setPropType(window.propType||'sfh');}catch(e){}}
   window.scrollTo({top:0,behavior:'smooth'});
