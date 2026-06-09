@@ -942,7 +942,14 @@ const agentConfig={
 };
 function loadAgentConfig(){
   const slug=window.location.pathname.split('/').filter(Boolean).pop();
-  const cfg=agentConfig[slug];if(!cfg)return;
+  console.log('DEBUG slug:', slug, 'pathname:', window.location.pathname);
+  // Temporary visible debug
+  const dbg=document.createElement('div');
+  dbg.id='slug-debug';
+  dbg.style.cssText='position:fixed;top:70px;right:10px;background:red;color:white;padding:8px 12px;z-index:9999;font-size:12px;font-family:monospace;border-radius:4px;';
+  dbg.textContent='slug: '+slug+' | path: '+window.location.pathname;
+  document.body.appendChild(dbg);
+  const cfg=agentConfig[slug];if(!cfg){dbg.textContent+=' | NO CONFIG MATCH';return;}
   // Replace main sticky header brand
   const hdr=document.getElementById('hdr-brand');
   if(hdr){hdr.innerHTML='<div style="width:36px;height:36px;background:#f5c518;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;overflow:hidden;"><rect width="40" height="40" fill="#F5C518"/><text x="-4" y="38" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white">&amp;</text></svg></div><div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.1;">'+cfg.name+'</div><div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div></div><div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Property Analyzer</div>';}
@@ -950,8 +957,8 @@ function loadAgentConfig(){
   const entryHdr=document.querySelector('#entry-overlay header');
   if(entryHdr){entryHdr.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)';entryHdr.innerHTML='<div style="display:flex;align-items:center;gap:10px;z-index:1;"><div style="width:36px;height:36px;background:#f5c518;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:40px;height:40px;overflow:hidden;"><rect width="40" height="40" fill="#F5C518"/><text x="-4" y="38" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white">&amp;</text></svg></div><div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:16px;font-weight:800;color:#fff;line-height:1.1;">'+cfg.name+'</div><div style="font-size:10px;font-weight:600;color:rgba(245,197,24,0.85);letter-spacing:1.5px;text-transform:uppercase;">ReeceNichols Real Estate</div></div><div style="width:1px;height:30px;background:rgba(255,255,255,0.15);margin:0 8px;"></div><div style="font-family:Plus Jakarta Sans,sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.55);">Property Analyzer</div></div><div style="z-index:1;"></div>';}
   document.querySelectorAll('header').forEach(h=>h.style.background='linear-gradient(135deg,#1c1c1c,#2a2a2a)');
-  const footer=document.getElementById('agent-footer');if(footer){footer.style.display='flex';footer.setAttribute('data-agent','1');}
-  const spacer=document.getElementById('ftr-spacer');if(spacer)spacer.style.display='block';
+  const footer=document.getElementById('agent-footer');if(footer){footer.style.cssText+='display:flex !important;';footer.setAttribute('data-agent','1');}
+  const spacer=document.getElementById('ftr-spacer');if(spacer)spacer.style.cssText+='display:block !important;';
   setT('af-name',cfg.name);setT('af-sub',cfg.title+' - '+cfg.team);setT('af-awards',cfg.awards);
   const ini=cfg.name.split(' ').map(n=>n[0]).join('');setT('af-avatar',ini);
   const ph=document.getElementById('af-phone');if(ph){ph.textContent=cfg.phone;ph.href=cfg.phoneHref;}
@@ -2069,7 +2076,10 @@ function initInvestorTool(){
 }
 
 
-loadAgentConfig();
+document.addEventListener('DOMContentLoaded',function(){
+  loadAgentConfig();
+  setTimeout(loadAgentConfig, 500);
+});
 
 </script>
 </body>
