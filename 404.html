@@ -1080,6 +1080,8 @@ function calcHome(){
   if(cl){if(vEl)vEl.className='verdict-hero v-yellow mb20';setT('h_rvb_icon','⚖️');setT('h_rvb_main',"It's close — lifestyle matters more than math");setT('h_rvb_sub','Buying builds '+fmtF(bNW)+' vs '+fmtF(rNW)+' renting over 5 years. Small difference — let your plans decide.');setT('h_rvb_rec','Your call');bc.classList.remove('sc-win');rc.classList.remove('sc-win');}
   else if(bW){if(vEl)vEl.className='verdict-hero v-green mb20';setT('h_rvb_icon','🏡');setT('h_rvb_main','Buying wins — builds more wealth over 5 years');setT('h_rvb_sub','Buying builds '+fmtF(bNW)+' in net worth vs '+fmtF(rNW)+' renting. Break-even: '+be+'.');setT('h_rvb_rec','Buy');bc.classList.add('sc-win');rc.classList.remove('sc-win');}
   else{if(vEl)vEl.className='verdict-hero v-red mb20';setT('h_rvb_icon','🏢');setT('h_rvb_main','Renting may be smarter right now');setT('h_rvb_sub','Renting and investing the difference builds '+fmtF(rNW)+' vs '+fmtF(bNW)+' buying over 5 years.');setT('h_rvb_rec','Rent for now');rc.classList.add('sc-win');bc.classList.remove('sc-win');}
+  // Ensure footer visible if agent config present
+  const _ftr=document.getElementById('agent-footer');if(_ftr&&_ftr.getAttribute('data-agent')==='1')_ftr.style.visibility='visible';
 }
 
 // ===== INVESTOR TOOL =====
