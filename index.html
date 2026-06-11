@@ -223,7 +223,7 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
 
 
 /* ===== PROP ANALYSIS ADDITIONS ===== */
-.entry-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#f0edff 0%,#e8f0fe 50%,#f5f3ff 100%);z-index:500;display:flex;flex-direction:column;overflow-y:auto;}
+.entry-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#f0edff 0%,#e8f0fe 50%,#f5f3ff 100%);z-index:500;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:80px;}
 .entry-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;min-height:calc(100vh - 64px);background:transparent;}
 .entry-tagline{font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--text-faint);margin-bottom:40px;}
 .entry-question{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:24px;text-align:center;}
@@ -268,7 +268,7 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
 .cc-t tr:last-child{border-bottom:none;font-weight:700;}
 .cc-t td{padding:8px 4px;font-size:13px;}
 .cc-t td:last-child{text-align:right;font-family:'JetBrains Mono',monospace;}
-#agent-footer{display:flex;visibility:hidden;position:fixed;bottom:0;left:0;right:0;z-index:200;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);}
+#agent-footer{display:flex;visibility:hidden;position:fixed;bottom:0;left:0;right:0;z-index:600;background:linear-gradient(135deg,#1c1c1c,#2a2a2a);border-top:2px solid rgba(245,197,24,0.3);padding:10px 40px;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(0,0,0,0.15);}
 #agent-footer[data-agent="1"]{visibility:visible;}
 @media(max-width:900px){.entry-cards{grid-template-columns:1fr;}.home-wrap{padding:20px 16px 80px;}.dp-grid,.key-metrics{grid-template-columns:repeat(2,1fr);}.two-col,.three-col{grid-template-columns:1fr;}.g4,.g5{grid-template-columns:repeat(2,1fr);}.path-bar{padding:0 16px;}}
 @media print{header{position:relative;}.path-bar{position:relative;}#agent-footer{visibility:hidden !important;}.btn-pdf{display:none;}}
@@ -1454,8 +1454,8 @@ function buildVerdict(s,fl,rn,mode){
     if(fg){cls='v-green';icon='🏆';main='Strong flip — hits your targets';sub=`Nets ${fmtF(fl.net)} at ${fmtP(fl.annROI)} annualized ROI. Cash required: ${fmtF(fl.cash)}.`;rec='Buy it';}
     else if(fl.net>0&&fl.annROI>0){cls='v-yellow';icon='⚠️';main='Marginal flip — negotiate harder';sub=`Profit of ${fmtF(fl.net)} doesn't clear your ${fmtF(s.targetFlipProfit)} threshold. Try offering ${fmtF(s.purchasePrice*0.93)}.`;rec='Negotiate';}
     else{cls='v-red';icon='🚫';main='Pass — flip loses money';sub=`All-in cost exceeds sale price after selling costs. This deal needs ${fmtF(Math.abs(fl.net))} more room.`;rec='Pass';}
-  } else if(mode==='ltr'||mode==='str'){
-    const label=mode==='str'?'STR':'rental';
+  } else if(mode==='ltr'||mode==='str'||mode==='mfh'){
+    const label=mode==='str'?'STR':mode==='mfh'?'multi-family':'rental';
     const totalReturnGood=rn.lt5&&rn.lt5.annualizedReturn>=s.targetCoC;
     if(rg){cls='v-green';icon='🏆';main=`Strong ${label} — hits your targets`;sub=`${fmtP(rn.coc)} CoC return with ${fmtF(rn.cf)}/mo cash flow. Cash required: ${fmtF(rn.cash)}.`;rec='Buy it';}
     else if(totalReturnGood&&rn.lt5){
@@ -1469,7 +1469,7 @@ function buildVerdict(s,fl,rn,mode){
     else if(rn.lt5&&rn.lt5.annualizedReturn>0){
       cls='v-yellow';icon='⚠️';
       main='Negative CF — equity may save it';
-      sub=`Bleeding ${fmtF(Math.abs(rn.cf))}/mo. But with ${fmtP(mode==='str'?gv('ap_s'):gv('ap_l'))} appreciation, 5-year total return is ${fmtP(rn.lt5.annualizedReturn)} annualized. Check if you can carry the loss.`;
+      sub=`Bleeding ${fmtF(Math.abs(rn.cf))}/mo. But with ${fmtP(mode==='str'?gv('ap_s'):mode==='mfh'?gv('mfh_ap'):gv('ap_l'))} appreciation, 5-year total return is ${fmtP(rn.lt5.annualizedReturn)} annualized. Check if you can carry the loss.`;
       rec='Evaluate';
     }
     else{cls='v-red';icon='🚫';main=`Pass — ${label} bleeds cash`;sub=`Negative cash flow of ${fmtF(Math.abs(rn.cf))}/mo with insufficient equity upside to compensate. Needs higher revenue or lower purchase price.`;rec='Pass';}
@@ -1477,7 +1477,11 @@ function buildVerdict(s,fl,rn,mode){
     // compare mode
     const scores={flip:fl?fl.annROI:-999,ltr:rn?rn.ltr.coc:-999,str:rn?rn.str.coc:-999};
     const best=Object.entries(scores).reduce((a,b)=>b[1]>a[1]?b:a);
-    if(best[1]>0){cls='v-green';icon='📊';main='Deal works — best strategy identified';sub=`${best[0]==='flip'?'🔨 Flip':best[0]==='ltr'?'🏠 LTR':'🏖️ STR'} wins with the highest return on this deal.`;rec=best[0]==='flip'?'Flip':best[0]==='ltr'?'LTR':'STR';}
+    const bestLabel=best[0]==='flip'?'🔨 Flip':best[0]==='ltr'?'🏠 LTR':'🏖️ STR';
+    const bestVal=best[0]==='flip'?`${fmtP(fl.annROI)} ann. ROI`:best[0]==='ltr'?`${fmtP(rn.ltr.coc)} CoC / ${fmtF(rn.ltr.cf)}/mo CF`:`${fmtP(rn.str.coc)} CoC / ${fmtF(rn.str.monthlyCF)}/mo CF`;
+    const bestHitsTarget=best[0]==='flip'?(fl.net>=s.targetFlipProfit&&fl.annROI>=15):(best[0]==='ltr'?(rn.ltr.coc>=s.targetCoC&&rn.ltr.cf>=s.targetCashFlow):(rn.str.coc>=s.targetCoC&&rn.str.monthlyCF>=s.targetCashFlow));
+    if(best[1]>0&&bestHitsTarget){cls='v-green';icon='📊';main=`${bestLabel} wins — hits your targets`;sub=`${bestLabel} leads with ${bestVal}. Compare all three strategies below.`;rec=best[0]==='flip'?'Flip':best[0]==='ltr'?'LTR':'STR';}
+    else if(best[1]>0){cls='v-yellow';icon='⚠️';main=`${bestLabel} leads — but misses your targets`;sub=`${bestLabel} has the best return at ${bestVal}, but doesn't clear your thresholds. Negotiate price or adjust assumptions.`;rec='Negotiate';}
     else{cls='v-red';icon='🚫';main="Pass — no strategy pencils at this price";sub=`Flip loses ${fmtF(Math.abs(fl.net))}. LTR returns ${fmtP(rn.ltr.coc)} CoC. STR returns ${fmtP(rn.str.coc)} CoC. Negotiate price down.`;rec='Pass';}
   }
   return`<div class="verdict-hero ${cls} mb20">
@@ -1710,7 +1714,6 @@ function buildTax(mode,s,fl,rn,str){
   const taxShield32=annualDepr*0.32;
 
   if(mode==='flip'){
-    const hm=gv('hm_f');
     const holdMonths=gv('hm_f');
     const isShortTerm=holdMonths<12;
     const profit=fl?fl.net:0;
@@ -1768,7 +1771,7 @@ function buildTax(mode,s,fl,rn,str){
         <div class="tax-title">Tax Insight — Across All Strategies</div>
         <div class="tax-line"><strong>Flip:</strong> ${gv('hm_c')<12?`Held under 12 months — profit taxed as ordinary income. Holding ${12-gv('hm_c')} more month${12-gv('hm_c')===1?'':'s'} qualifies for the 15% long-term capital gains rate.`:'Held 12+ months — qualifies for long-term capital gains rates (typically 15%).'}</div>
         <div class="tax-line"><strong>LTR:</strong> Generates an estimated <strong>${fmtF(annualDepr)}/year in depreciation</strong> — roughly <strong>${fmtF(taxShield24)}/year in tax savings</strong> at 24% with no out-of-pocket cost.</div>
-        <div class="tax-line"><strong>STR:</strong> Same depreciation benefit as LTR. ${gv('sl_s')<=7||gv('occ_c')>0?'With average stays ≤7 nights, may also qualify for non-passive loss treatment — offsetting W-2 income without AGI limits.':'Increase your minimum stay requirement to explore non-passive loss treatment.'}</div>
+        <div class="tax-line"><strong>STR:</strong> Same depreciation benefit as LTR. ${(gv('sl_c')||gv('sl_s'))<=7?'With average stays ≤7 nights, may also qualify for non-passive loss treatment — offsetting W-2 income without AGI limits.':'Increase your minimum stay requirement (currently '+(gv('sl_c')||gv('sl_s'))+' nights) to ≤7 to explore non-passive loss treatment.'}</div>
         <div class="tax-disclaimer">Depreciation estimate based on 27.5-year straight-line on 80% of purchase price. Tax outcomes vary by bracket, AGI, and filing status. Consult a CPA before making investment decisions.</div>
       </div>
     </div>`;
@@ -1998,12 +2001,12 @@ function calc(){
         </div>
         <div style="text-align:center;">
           <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;">LTR break-even vs flip</div>
-          <div class="be-yr">${annCF>0&&fl.net>0?beYrs.toFixed(1)+' yrs':annCF<=0?'∞':'Now'}</div>
+          <div class="be-yr">${annCF>0&&fl.net>0?beYrs.toFixed(1)+' yrs':annCF<=0?'∞':fl.net<=0?'N/A':'—'}</div>
           <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">Years of LTR income to match flip payout</div>
         </div>
         <div>
           <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">10-Year Returns</div>
-          ${mrow('Flip (reinvested @8%)',fmt$(flip10),'gld')}
+          ${mrow('Flip (reinvested @8%)',fl.net>0?fmt$(flip10):fmtF(fl.net)+' (loss)' ,fl.net>0?'gld':'neg')}
           ${mrow('LTR (CF + equity)',fmt$(lt10_l.eq+lt10_l.cf),colorC(lt10_l.eq+lt10_l.cf))}
           ${mrow('STR (est. CF + equity)',fmt$(lt10_l.eq+str.annCF*10),colorC(lt10_l.eq+str.annCF*10,'pur','neg'))}
         </div>
@@ -2023,7 +2026,7 @@ function calc(){
     setT('mfh-hoa-display',s.propHOA>0?fmt$(s.propHOA)+'/yr':'$0');
     setT('mfh-gross-display',fmtF(totalUnits*avgRent)+'/mo');
     const mfhRn={coc:mfh.coc,cf:mfh.cf,cash:mfh.cash,lt5:lt5m};
-    verdictHTML=buildVerdict(s,cFlip(s,6,8,0),mfhRn,'ltr');
+    verdictHTML=buildVerdict(s,cFlip(s,6,8,0),mfhRn,'mfh');
     kmHTML=buildKM([
       {label:'Monthly Cash Flow',val:fmtF(mfh.cf)+'/mo',cls:colorC(mfh.cf),sub:`Across all ${mfh.totalUnits} units`},
       {label:'Cash-on-Cash',val:fmtP(mfh.coc),cls:colorC(mfh.coc,'gld','neg'),sub:`Target: ${fmtP(s.targetCoC)}`},
