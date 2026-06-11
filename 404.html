@@ -1460,8 +1460,9 @@ function buildVerdict(s,fl,rn,mode){
     if(rg){cls='v-green';icon='🏆';main=`Strong ${label} — hits your targets`;sub=`${fmtP(rn.coc)} CoC return with ${fmtF(rn.cf)}/mo cash flow. Cash required: ${fmtF(rn.cash)}.`;rec='Buy it';}
     else if(totalReturnGood&&rn.lt5){
       cls='v-green';icon='📈';
-      main=`Equity play — negative CF, strong total return`;
-      sub=`Cash flow is ${fmtF(rn.cf)}/mo, but ${fmtP(rn.lt5.annualizedReturn)} annualized total return over 5 years when appreciation is factored in. A deliberate equity strategy.`;
+      const cfPositive=rn.cf>=0;
+      main=cfPositive?`Strong total return — CF below target but solid equity play`:`Equity play — negative CF, strong total return`;
+      sub=cfPositive?`Cash flow is ${fmtF(rn.cf)}/mo — misses your ${fmtF(s.targetCashFlow)}/mo target, but ${fmtP(rn.lt5.annualizedReturn)} annualized total return over 5 years when appreciation is factored in.`:`Cash flow is -${fmtF(Math.abs(rn.cf))}/mo, but ${fmtP(rn.lt5.annualizedReturn)} annualized total return over 5 years when appreciation is factored in. A deliberate equity strategy.`;
       rec='Hold';
     }
     else if(rn.cf>0){cls='v-yellow';icon='⚠️';main=`Marginal ${label} — below your targets`;sub=`${fmtP(rn.coc)} CoC misses your ${fmtP(s.targetCoC)} target. Positive cash flow but thin margin.`;rec='Negotiate';}
