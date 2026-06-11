@@ -44,8 +44,8 @@ header{background:var(--grad-header);padding:0 40px;height:64px;display:flex;ali
 .ig{display:flex;flex-direction:column;gap:5px;}
 .il{font-size:10px;font-weight:600;color:var(--violet);letter-spacing:0.8px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
 .tt{width:14px;height:14px;border-radius:50%;background:var(--violet-dim);border:1px solid var(--violet-border);color:var(--violet);font-size:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help;position:relative;flex-shrink:0;}
-.tt:hover .tb{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
-.tb{position:absolute;bottom:calc(100%+8px);left:50%;transform:translateX(-50%) translateY(4px);background:#1e1b4b;border-radius:var(--radius-sm);padding:10px 13px;width:214px;font-size:11px;font-weight:400;color:#e0e7ff;text-transform:none;letter-spacing:0;line-height:1.55;z-index:300;opacity:0;pointer-events:none;transition:all 0.18s ease;box-shadow:0 8px 30px rgba(30,27,75,0.35);}
+.tb{position:fixed;background:#1e1b4b;border-radius:var(--radius-sm);padding:10px 13px;width:214px;font-size:11px;font-weight:400;color:#e0e7ff;text-transform:none;letter-spacing:0;line-height:1.55;z-index:9000;opacity:0;pointer-events:none;transition:opacity 0.15s ease;box-shadow:0 8px 30px rgba(30,27,75,0.35);}
+.tb.tt-visible{opacity:1;}
 .tb .tn{color:#a78bfa;font-weight:700;font-size:10px;letter-spacing:0.5px;display:block;margin-bottom:3px;}
 .tb::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1e1b4b;}
 input[type="number"]{background:#f8f7ff;border:1.5px solid rgba(124,58,237,0.15);border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;padding:9px 12px;width:100%;outline:none;-moz-appearance:textfield;transition:border-color 0.2s,background 0.2s,box-shadow 0.2s;}
@@ -316,7 +316,7 @@ select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.1
         <div class="entry-card-desc">Analyze a flip, long-term rental, or short-term rental. Compare all three strategies side by side.</div>
       </div>
     </div>
-    <div style="margin-top:36px;font-size:11px;color:var(--text-faint);text-align:center;" id="entry-powered">Provided by your agent &nbsp;&#183;&nbsp; Powered by Real Estate Analysis</div>
+    <div style="margin-top:36px;font-size:11px;color:var(--text-faint);text-align:center;" id="entry-powered">Powered by <a href="https://realestate-analysis.com" style="color:var(--text-faint);text-decoration:none;" target="_blank">RealEstate-Analysis.com</a></div>
   </div>
 </div>
 
@@ -968,7 +968,7 @@ function loadAgentConfig(){
   // Header phone + CTA
   const hdrPh=document.getElementById('hdr-phone');if(hdrPh){hdrPh.textContent=cfg.phone;hdrPh.href=cfg.phoneHref;hdrPh.style.display='inline';}
   const hdrCta=document.getElementById('hdr-cta');if(hdrCta){hdrCta.textContent=cfg.ctaLabel;hdrCta.href=cfg.ctaUrl;hdrCta.style.display='inline';}
-  const ep=document.getElementById('entry-powered');if(ep)ep.innerHTML='Provided by <strong>'+cfg.name+'</strong> &nbsp;&#183;&nbsp; '+cfg.phone+' &nbsp;&#183;&nbsp; Powered by Real Estate Analysis';
+  const ep=document.getElementById('entry-powered');if(ep)ep.innerHTML='Provided by <strong>'+cfg.name+'</strong> &nbsp;&#183;&nbsp; '+cfg.phone+' &nbsp;&#183;&nbsp; Powered by <a href="https://realestate-analysis.com" style="color:var(--text-faint);text-decoration:none;" target="_blank">RealEstate-Analysis.com</a>';
 }
 
 // ===== PATH =====
@@ -1546,11 +1546,11 @@ function buildEquityTable(s,ltFn,apId){
 }
 
 // ===== SLIDERS HTML =====
-function sliderCard(id,label,min,max,step,val,unit,tt,ia,ib,la,lb){
+function sliderCard(id,label,min,max,step,val,unit,tt,ia,ib){
   return`<div class="sl-card">
     <div class="sl-hd"><div class="sl-lbl"><span class="tt">?<span class="tb"><span class="tn">${tt}</span></span></span>${label}</div><div class="sl-val" id="sv_${id}">${unit==='%'?val+'%':unit==='+%'?'+0%':unit==='mo'?'+0 mo':val+unit}</div></div>
     <input type="range" id="sl_${id}" min="${min}" max="${max}" step="${step}" value="${val}" oninput="slUp('${id}')">
-    <div class="sl-imp"><div class="sl-ii"><div class="sl-il">${la}</div><div class="sl-iv" id="si_${id}_a">—</div></div><div class="sl-ii"><div class="sl-il">${lb}</div><div class="sl-iv" id="si_${id}_b">—</div></div></div>
+    <div class="sl-imp"><div class="sl-ii"><div class="sl-il">${ia}</div><div class="sl-iv" id="si_${id}_a">—</div></div><div class="sl-ii"><div class="sl-il">${ib}</div><div class="sl-iv" id="si_${id}_b">—</div></div></div>
   </div>`;
 }
 
@@ -1567,13 +1567,13 @@ function buildSensHTML(mode,s){
   </div>`;
 }
 function buildSensSelect(id,mode,isCol){
-  const opts={flip:[['purchasePrice','Purchase Price'],['arv','ARV'],['rehabCost','Rehab Cost'],['hm_f','Hold Months'],['sc_f','Selling Costs %']],ltr:[['purchasePrice','Purchase Price'],['mr_l','Monthly Rent'],['vr_l','Vacancy %'],['interestRate','Interest Rate'],['rehabCost','Rehab Cost']],str:[['nr_s','Nightly Rate'],['occ_s','Occupancy %'],['purchasePrice','Purchase Price'],['smgmt_s','STR Mgmt %'],['interestRate','Interest Rate']],cmp:[['purchasePrice','Purchase Price'],['mr_c','LTR Rent'],['nr_c','STR Nightly Rate'],['occ_c','STR Occupancy'],['interestRate','Interest Rate']]};
+  const opts={flip:[['purchasePrice','Purchase Price'],['arv','ARV'],['rehabCost','Rehab Cost'],['hm_f','Hold Months'],['sc_f','Selling Costs %']],ltr:[['purchasePrice','Purchase Price'],['mr_l','Monthly Rent'],['vr_l','Vacancy %'],['interestRate','Interest Rate'],['rehabCost','Rehab Cost']],str:[['nr_s','Nightly Rate'],['occ_s','Occupancy %'],['purchasePrice','Purchase Price'],['smgmt_s','STR Mgmt %'],['interestRate','Interest Rate']],mfh:[['mfh_rent','Avg Rent/Unit'],['purchasePrice','Purchase Price'],['mfh_vr','Vacancy %'],['interestRate','Interest Rate'],['mfh_pm','Mgmt Fee %']],cmp:[['purchasePrice','Purchase Price'],['mr_c','LTR Rent'],['nr_c','STR Nightly Rate'],['occ_c','STR Occupancy'],['interestRate','Interest Rate']]};
   const list=opts[mode]||opts.flip;
   const defIdx=isCol?1:0;
   return`<select id="${id}" onchange="buildSensTable('${mode}')">${list.map((o,i)=>`<option value="${o[0]}"${i===defIdx?' selected':''}>${o[1]}</option>`).join('')}</select>`;
 }
 function buildMetricSelect(id,mode){
-  const opts={flip:[['flipProfit','Flip Net Profit'],['flipROI','Flip Ann. ROI']],ltr:[['coc','CoC Return'],['cashflow','Monthly CF']],str:[['coc','CoC Return'],['cashflow','Monthly CF']],cmp:[['coc','LTR CoC'],['strCoc','STR CoC'],['flipProfit','Flip Profit'],['cashflow','LTR CF'],['strCF','STR CF']]};
+  const opts={flip:[['flipProfit','Flip Net Profit'],['flipROI','Flip Ann. ROI']],ltr:[['coc','CoC Return'],['cashflow','Monthly CF']],str:[['coc','CoC Return'],['cashflow','Monthly CF']],mfh:[['coc','CoC Return'],['cashflow','Monthly CF']],cmp:[['coc','LTR CoC'],['strCoc','STR CoC'],['flipProfit','Flip Profit'],['cashflow','LTR CF'],['strCF','STR CF']]};
   const list=opts[mode]||opts.flip;
   return`<select id="${id}" onchange="buildSensTable('${mode}')">${list.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
 }
@@ -1582,6 +1582,7 @@ function buildMetricSelect(id,mode){
 function getRange(field,base){
   if(field==='purchasePrice')return Array.from({length:5},(_,k)=>base-40000+k*20000);
   if(field==='mr_l'||field==='mr_c')return Array.from({length:5},(_,k)=>base-200+k*100);
+  if(field==='mfh_rent')return Array.from({length:5},(_,k)=>Math.round(base*(1-0.04+k*0.02)));
   if(field==='rehabCost')return Array.from({length:5},(_,k)=>base-20000+k*10000);
   if(field==='arv')return Array.from({length:5},(_,k)=>base-40000+k*20000);
   if(field==='vr_l'||field==='vr_c')return[0,5,8,12,20];
@@ -1590,10 +1591,12 @@ function getRange(field,base){
   if(field==='nr_s'||field==='nr_c')return Array.from({length:5},(_,k)=>base-40+k*20);
   if(field==='occ_s'||field==='occ_c')return[40,50,62,70,80];
   if(field==='smgmt_s'||field==='smgmt_c')return[15,20,25,30,35];
+  if(field==='mfh_pm')return[5,8,10,12,15];
   return Array.from({length:5},(_,k)=>base-2+k);
 }
 function fmtLbl(f,v){
   if(['purchasePrice','mr_l','mr_c','rehabCost','arv','nr_s','nr_c'].includes(f))return fmt$(v);
+  if(f==='mfh_rent')return fmtF(v);
   if(['interestRate','vr_l','vr_c','occ_s','occ_c','smgmt_s','smgmt_c','sc_f'].includes(f))return v+'%';
   if(f==='hm_f'||f==='hm_c')return v+'mo';
   return v;
@@ -1617,42 +1620,59 @@ function buildSensTable(mode){
   const cf=document.getElementById('sc_'+mode)?.value;
   const metric=document.getElementById('sm_'+mode)?.value;
   const tbl=document.getElementById('st_'+mode);
-  if(!tbl||!rf||!cf||rf===cf)return;
-  const rowBase=gv(rf);const colBase=gv(cf);
-  const rows=getRange(rf,rowBase);const cols=getRange(cf,colBase);
+  if(!tbl||!rf||!cf)return;
+  // If row and col are the same, switch col to first option that differs
+  if(rf===cf){
+    const colSel=document.getElementById('sc_'+mode);
+    if(colSel){
+      const opts=Array.from(colSel.options);
+      const alt=opts.find(o=>o.value!==rf);
+      if(alt){colSel.value=alt.value;}
+    }
+  }
+  const cfFinal=document.getElementById('sc_'+mode)?.value;
+  if(!cfFinal||rf===cfFinal)return;
+  const rowBase=gv(rf);const colBase=gv(cfFinal);
+  const rows=getRange(rf,rowBase);const cols=getRange(cfFinal,colBase);
   tbl.innerHTML='';
   const thead=document.createElement('thead');
   const rl=rf.replace(/_[a-z]$/,'').replace(/([A-Z])/g,' $1').trim();
-  const cl2=cf.replace(/_[a-z]$/,'').replace(/([A-Z])/g,' $1').trim();
+  const cl2=cfFinal.replace(/_[a-z]$/,'').replace(/([A-Z])/g,' $1').trim();
   let hr=`<tr><th class="rh">${rl} \\ ${cl2}</th>`;
-  cols.forEach(c=>{hr+=`<th>${fmtLbl(cf,c)}</th>`;});hr+='</tr>';
+  cols.forEach(c=>{hr+=`<th>${fmtLbl(cfFinal,c)}</th>`;});hr+='</tr>';
   thead.innerHTML=hr;tbl.appendChild(thead);
   const tbody=document.createElement('tbody');
   rows.forEach(rv=>{
     const tr=document.createElement('tr');
     let rh=`<td class="rl">${fmtLbl(rf,rv)}</td>`;
     cols.forEach(cv=>{
-      const so={...s,[rf]:rv,[cf]:cv};
+      const so={...s,[rf]:rv,[cfFinal]:cv};
       let val=0;
       try{
         if(metric==='flipProfit'||metric==='flipROI'){
           const hm=gv('hm_f')||gv('hm_c')||6;const sc2=gv('sc_f')||gv('sc_c')||8;const lp=gv('lp_f')||gv('lp_c')||0;
           const fl=cFlip(so,hm,sc2,lp);val=metric==='flipProfit'?fl.net:fl.annROI;
-        } else if(metric==='coc'||metric==='cashflow'){
+        } else if((metric==='coc'||metric==='cashflow')&&mode!=='str'&&mode!=='mfh'){
           const mr=so['mr_l']||so['mr_c']||gv('mr_l')||gv('mr_c')||1800;
           const vr=so['vr_l']||so['vr_c']||gv('vr_l')||gv('vr_c')||8;
-          if(mode==='cmp'){const rn=cLTR_c(so,gv('mr_c'),gv('vr_c'),gv('pm_c'),gv('cxmt_c'),gv('afc_c'));const mrO=rf==='mr_c'?rv:cf==='mr_c'?cv:gv('mr_c');const vrO=rf==='vr_c'?rv:cf==='vr_c'?cv:gv('vr_c');const rn2=cLTR_c(so,mrO,vrO,gv('pm_c'),gv('cxmt_c'),gv('afc_c'));val=metric==='coc'?rn2.coc:rn2.cf;}
-          else{const mrO=rf==='mr_l'?rv:cf==='mr_l'?cv:gv('mr_l');const vrO=rf==='vr_l'?rv:cf==='vr_l'?cv:gv('vr_l');const rn=cLTR(so,mrO,vrO,gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA);val=metric==='coc'?rn.coc:rn.cf;}
-        } else if(metric==='strCoc'||metric==='strCF'){
-          const nrO=rf==='nr_s'||rf==='nr_c'?rv:cf==='nr_s'||cf==='nr_c'?cv:gv('nr_s')||gv('nr_c');
-          const occO=rf==='occ_s'||rf==='occ_c'?rv:cf==='occ_s'||cf==='occ_c'?cv:gv('occ_s')||gv('occ_c');
-          const smO=rf==='smgmt_s'||rf==='smgmt_c'?rv:cf==='smgmt_s'||cf==='smgmt_c'?cv:gv('smgmt_s')||gv('smgmt_c');
+          if(mode==='cmp'){const rn=cLTR_c(so,gv('mr_c'),gv('vr_c'),gv('pm_c'),gv('cxmt_c'),gv('afc_c'));const mrO=rf==='mr_c'?rv:cfFinal==='mr_c'?cv:gv('mr_c');const vrO=rf==='vr_c'?rv:cfFinal==='vr_c'?cv:gv('vr_c');const rn2=cLTR_c(so,mrO,vrO,gv('pm_c'),gv('cxmt_c'),gv('afc_c'));val=metric==='coc'?rn2.coc:rn2.cf;}
+          else{const mrO=rf==='mr_l'?rv:cfFinal==='mr_l'?cv:gv('mr_l');const vrO=rf==='vr_l'?rv:cfFinal==='vr_l'?cv:gv('vr_l');const rn=cLTR(so,mrO,vrO,gv('pm_l'),gv('cx_l'),gv('mt_l'),s.propTax,s.propInsurance,s.propHOA);val=metric==='coc'?rn.coc:rn.cf;}
+        } else if(metric==='strCoc'||metric==='strCF'||(mode==='str'&&(metric==='coc'||metric==='cashflow'))){
+          const nrO=rf==='nr_s'||rf==='nr_c'?rv:cfFinal==='nr_s'||cfFinal==='nr_c'?cv:gv('nr_s')||gv('nr_c');
+          const occO=rf==='occ_s'||rf==='occ_c'?rv:cfFinal==='occ_s'||cfFinal==='occ_c'?cv:gv('occ_s')||gv('occ_c');
+          const smO=rf==='smgmt_s'||rf==='smgmt_c'?rv:cfFinal==='smgmt_s'||cfFinal==='smgmt_c'?cv:gv('smgmt_s')||gv('smgmt_c');
           const str2=mode==='cmp'?cSTR_c(so,nrO,occO,smO,gv('pf_c'),gv('mop_c'),gv('safc_c')):cSTR(so,nrO,occO,gv('pf_s'),smO,gv('cl_s'),gv('sl_s'),gv('fc_s'),gv('ut_s'),gv('sp_s'),gv('ins_s'),s.propTax,s.propHOA,gv('lic_s'),gv('cx_s'));
-          val=metric==='strCoc'?str2.coc:str2.monthlyCF;
+          val=metric==='strCoc'||metric==='coc'?str2.coc:str2.monthlyCF;
+        } else if(mode==='mfh'){
+          const rent=rf==='mfh_rent'?rv:cfFinal==='mfh_rent'?cv:gv('mfh_rent')||1200;
+          const vr=rf==='mfh_vr'?rv:cfFinal==='mfh_vr'?cv:gv('mfh_vr')||8;
+          const pm=rf==='mfh_pm'?rv:cfFinal==='mfh_pm'?cv:gv('mfh_pm')||10;
+          const mfh2=cMFH(so,gv('mfh_units')||4,rent,vr,pm,gv('mfh_cx'),gv('mfh_mt'),gv('mfh_cu'),s.propTax,s.propInsurance,s.propHOA);
+          val=metric==='coc'?mfh2.coc:mfh2.cf;
         }
       }catch(e){val=0;}
       const cls2=sensClass(val,metric,s);
-      const isBase=Math.abs(rv-rowBase)<0.01&&Math.abs(cv-colBase)<0.01;
+      const isBase=Math.abs(rv-rowBase)<0.01&&Math.abs(cv-colBase)<0.01;  // cfFinal used for cols
       rh+=`<td class="${cls2}${isBase?' cb':''}">${fmtMetric(val,metric)}</td>`;
     });
     tr.innerHTML=rh;tbody.appendChild(tr);
@@ -2017,7 +2037,7 @@ function calc(){
       <div class="tax-body">
         <div class="tax-title">Tax Insight — Multi-Family</div>
         <div class="tax-line">Estimated <strong>${fmtF(annualDepr)}/year in depreciation</strong> — worth roughly <strong>${fmtF(taxShield)}/year in tax savings</strong> at a 24% rate.</div>
-        <div class="tax-line">Multi-family investors also use <strong>cost segregation</strong> to accelerate depreciation — an engineer reclassifies components like appliances, flooring, and fixtures as 5–7 year property. On a ${fmt$(s.purchasePrice)} building this can produce <strong>$${Math.round(s.purchasePrice*0.15/1000)}K–$${Math.round(s.purchasePrice*0.25/1000)}K in first-year bonus depreciation</strong>.</div>
+        <div class="tax-line">Multi-family investors also use <strong>cost segregation</strong> to accelerate depreciation — an engineer reclassifies components like appliances, flooring, and fixtures as 5–7 year property. On a ${fmt$(s.purchasePrice)} building this can produce <strong>$${Math.round(s.purchasePrice*0.15/1000)}K–$${Math.round(s.purchasePrice*0.25/1000)}K in first-year bonus depreciation</strong>. Particularly powerful at your scale.</div>
         <div class="tax-disclaimer">Consult a CPA who specializes in real estate. Cost segregation typically costs $3–10K but can generate far larger tax benefits.</div>
       </div>
     </div>`;
@@ -2053,7 +2073,7 @@ function calc(){
         ${buildEquityTable(s,yr=>cLT_MFH(s,gv('mfh_units')||4,gv('mfh_rent')||1200,gv('mfh_vr'),gv('mfh_pm'),gv('mfh_cx'),gv('mfh_mt'),gv('mfh_cu'),gv('mfh_ap'),gv('mfh_rg'),yr),'mfh_ap')}
       </div>
     </div>`;
-    stressHTML='';sensHTML='';
+    stressHTML='';sensHTML=buildSensHTML('mfh',s);
   }
 
   // Inject HTML
@@ -2067,7 +2087,7 @@ function calc(){
 
   // Build sens table after DOM update
   setTimeout(()=>{
-    const m=currentMode==='flip'?'flip':currentMode==='ltr'?'ltr':currentMode==='str'?'str':currentMode==='mfh'?null:'cmp';
+    const m=currentMode==='flip'?'flip':currentMode==='ltr'?'ltr':currentMode==='str'?'str':currentMode==='mfh'?'mfh':'cmp';
     if(m)buildSensTable(m);
   },10);
 }
@@ -2085,6 +2105,36 @@ function initInvestorTool(){
 document.addEventListener('DOMContentLoaded',function(){
   loadAgentConfig();
   setTimeout(loadAgentConfig, 500);
+});
+
+// Global tooltip positioning — fixes clipping inside overflow:auto containers
+document.addEventListener('mouseover',function(e){
+  const tt=e.target.closest('.tt');
+  if(!tt)return;
+  const tb=tt.querySelector('.tb');
+  if(!tb)return;
+  const r=tt.getBoundingClientRect();
+  tb.classList.add('tt-visible');
+  requestAnimationFrame(()=>{
+    const tbH=tb.offsetHeight;
+    const left=Math.min(Math.max(r.left+r.width/2-107,8),window.innerWidth-222);
+    // Flip below if not enough room above
+    const goBelow=r.top-tbH-12<0;
+    const top=goBelow?r.bottom+8:r.top-tbH-8;
+    tb.style.left=left+'px';
+    tb.style.top=top+'px';
+    // Fix arrow direction if flipped
+    tb.style.setProperty('--arr-top',goBelow?'auto':'100%');
+    tb.style.setProperty('--arr-bottom',goBelow?'-10px':'auto');
+    tb.style.setProperty('--arr-border',goBelow?'0 5px 5px':'5px 5px 0');
+    tb.style.setProperty('--arr-color',goBelow?'transparent transparent #1e1b4b':'#1e1b4b transparent transparent');
+  });
+});
+document.addEventListener('mouseout',function(e){
+  const tt=e.target.closest('.tt');
+  if(!tt)return;
+  const tb=tt.querySelector('.tb');
+  if(tb)tb.classList.remove('tt-visible');
 });
 
 </script>
